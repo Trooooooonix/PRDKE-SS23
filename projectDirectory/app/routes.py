@@ -24,6 +24,7 @@ def home_site():
     return render_template('index.html', title='Home', user=user, posts=posts)
 
 @app.route("/overview")
+@login_required
 def overview():
     user = {'username': 'Voestalpine'}
     posts = [
