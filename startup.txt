@@ -2,5 +2,5 @@
 # py -3 -m venv venv
 # venv\Scripts\activate
 # "Run once" -> r
-# $env:FLASK_APP = "app"
+# $env:FLASK_APP = "app"    -> not needed (config)
 # flask run
