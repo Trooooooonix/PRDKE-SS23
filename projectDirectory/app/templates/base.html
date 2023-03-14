@@ -11,7 +11,12 @@
         <div>
             Go to Homescreen:   <a href="{{ url_for('home_site') }}">Home</a>
             Overview:           <a href="{{ url_for('overview') }}">Overview</a>
-            Login:              <a href="{{ url_for('login') }}">Login</a>
+
+            {% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
         </div>
         <hr>
         {% block content %}{% endblock %}
