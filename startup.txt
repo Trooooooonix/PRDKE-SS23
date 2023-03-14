@@ -1,0 +1,6 @@
+# cd projectDirectory
+# py -3 -m venv venv
+# venv\Scripts\activate
+# "Run once" -> r
+# $env:FLASK_APP = "app"
+# flask run
