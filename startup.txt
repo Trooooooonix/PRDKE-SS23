@@ -4,3 +4,14 @@
 # "Run once" -> r
 # $env:FLASK_APP = "app"    -> not needed (config)
 # flask run
+
+
+
+
+USER ADMIN:
+TroniX
+admin2
+
+USER non Admin:
+AndiNonAdmin
+nonAdmin
