@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login
 
+
 # Thats how to create a Table in the DB
 # This part is responsible for user's login-data + (de-)hashing the password
 class User(UserMixin, db.Model):
@@ -28,11 +29,12 @@ class User(UserMixin, db.Model):
 def load_user(id):
     return User.query.get(int(id))
 
+
 # ====================================================================
 # the next part is responsible for the database itself.
 class Company(db.Model):
     company_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, index = True, unique = True)
+    name = db.Column(db.Text, index=True, unique=True)
     address = db.Column(db.Text)
     employee_nr = db.Column(db.Integer)
     info = db.Column(db.Text)
@@ -63,8 +65,9 @@ class Company(db.Model):
     def __repr__(self):
         return 'Company {}'.format(self.name + " " + self.address + " " + self.employee_nr)
 
+
 class Account(db.Model):
-    account_id = db.Column(db.Integer, primary_key = True)
+    account_id = db.Column(db.Integer, primary_key=True)
     balance = db.Column(db.Numeric(precision=10, scale=5))
     owner = db.Column(db.Text)
 
@@ -84,18 +87,14 @@ class Account(db.Model):
     def __repr__(self):
         return '<Account: {}>'.format(self.account_id + " " + self.owner + ": " + self.balance)
 
+
 class Security(db.Model):
-    __tablename__ = 'Security'
-    security_id = db.Column(db.Integer, primary_key = True)
+    security_id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Numeric(precision=10, scale=5))
     amount = db.Column(db.Integer)
     currency = db.Column(db.String)
-    name = db.Column(db.String, index = True, unique = True)
-    comp_id = db.Column(db.Integer, db.ForeignKey('Company.company_id'))
+    name = db.Column(db.String, index=True, unique=True)
     market_id = db.Column(db.Integer)
-    __table_args__ = (
-        db.PrimaryKeyConstraint('security_id', 'comp_id'),
-    )
 
     def __init__(self, security_id, price, amount, currency, name, comp_id, market_id):
         self.security_id = security_id
@@ -103,13 +102,14 @@ class Security(db.Model):
         self.amount = amount
         self.currency = currency
         self.name = name
-        self.comp_id = comp_id
         self.market_id = market_id
 
     def __repr__(self):
-        return '<Security {}>'.format(self.name + " " + self.price)
+        return '<Security: {}>'.format(self.security_id + " " + self.name + ": " + self.price + " " + self.currency + " " + self.amount)
 
 
-# sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column
-#   'Security.comp_id' could not find table 'Company' with which to generate a foreign key to target column 'company_id'
-# Error
+company_securities = db.Table('company_securities', db.Model.metadata,
+                              db.Column('sec_id', db.Integer, db.ForeignKey('security.security_id')),
+                              db.Column('comp_id', db.Integer, db.ForeignKey('company.company_id'))
+                              )
+
