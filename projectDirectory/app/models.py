@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from app import login
 
 # Thats how to create a Table in the DB
+# This part is responsible for user's login-data + (de-)hashing the password
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -22,16 +23,92 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __repr__(self):
-        return '<Post {}>'.format(self.body)
 
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
+# ====================================================================
+# the next part is responsible for the database itself.
+class Company(db.Model):
+    company_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, index = True, unique = True)
+    address = db.Column(db.Text)
+    employee_nr = db.Column(db.Integer)
+    info = db.Column(db.Text)
+    industry_type = db.Column(db.Text)
+    opening_hours = db.Column(db.Text)
+    amount_securities = db.Column(db.Text)
+    account_nr = db.Column(db.Integer)
+
+    def __init__(self, name, address, employee_nr, info, industry_type, amount_securities, account_nr, opening_hours):
+        self.name = name
+        self.address = address
+        self.employee_nr = employee_nr
+        self.info = info
+        self.industry_type = industry_type
+        self.amount_securities = amount_securities
+        self.account_nr = account_nr
+        self.opening_hours = opening_hours
+        self.generate_company_id()
+
+    def generate_company_id(self):
+        # query to get the most recent company
+        last_company = Company.query.order_by(Company.company_id.desc()).first()
+        if last_company:
+            self.company_id = last_company.company_id + 1
+        else:
+            self.company_id = 1
+
+    def __repr__(self):
+        return 'Company {}'.format(self.name + " " + self.address + " " + self.employee_nr)
+
+class Account(db.Model):
+    account_id = db.Column(db.Integer, primary_key = True)
+    balance = db.Column(db.Numeric(precision=10, scale=5))
+    owner = db.Column(db.Text)
+
+    def __init__(self, balance, owner):
+        self.balance = balance
+        self.owner = owner
+        generate_password_hash(self)
+
+    def generate_account_id(self):
+        # query to get the most recent company
+        last_account = Account.query.order_by(Account.account_id.desc()).first()
+        if last_account:
+            self.account_id = last_account.company_id + 1
+        else:
+            self.account_id = 1
+
+    def __repr__(self):
+        return '<Account: {}>'.format(self.account_id + " " + self.owner + ": " + self.balance)
+
+class Security(db.Model):
+    __tablename__ = 'Security'
+    security_id = db.Column(db.Integer, primary_key = True)
+    price = db.Column(db.Numeric(precision=10, scale=5))
+    amount = db.Column(db.Integer)
+    currency = db.Column(db.String)
+    name = db.Column(db.String, index = True, unique = True)
+    comp_id = db.Column(db.Integer, db.ForeignKey('Company.company_id'))
+    market_id = db.Column(db.Integer)
+    __table_args__ = (
+        db.PrimaryKeyConstraint('security_id', 'comp_id'),
+    )
+
+    def __init__(self, security_id, price, amount, currency, name, comp_id, market_id):
+        self.security_id = security_id
+        self.price = price
+        self.amount = amount
+        self.currency = currency
+        self.name = name
+        self.comp_id = comp_id
+        self.market_id = market_id
+
+    def __repr__(self):
+        return '<Security {}>'.format(self.name + " " + self.price)
+
+
+# sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column
+#   'Security.comp_id' could not find table 'Company' with which to generate a foreign key to target column 'company_id'
