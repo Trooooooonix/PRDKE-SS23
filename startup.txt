@@ -19,6 +19,4 @@ NON-ADMINS:
 AndiNonAdmin
 nonAdmin
 
-Tronix
-1234
 
