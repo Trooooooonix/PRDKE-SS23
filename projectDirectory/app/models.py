@@ -112,3 +112,4 @@ class Security(db.Model):
 
 # sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column
 #   'Security.comp_id' could not find table 'Company' with which to generate a foreign key to target column 'company_id'
+# Error
