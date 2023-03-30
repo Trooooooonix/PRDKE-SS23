@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Security Overview</h1>
+    <ul>
+        {% for security in securities %}
+            <li>
+                <strong>{{ security.name }}</strong>
+                <a class="btn btn-danger"
+                       href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a>
+                <ul>
+                    <li>ID: {{ security.security_id }}</li>
+                    <li>Price: {{ security.price }}</li>
+                    <li>Amount: {{ security.amount }}</li>
+                    <li>Currency: {{ security.currency }}</li>
+                    <li>Market ID: {{ security.market_id }}</li>
+                    <li>Company ID: {{ security.comp_id }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

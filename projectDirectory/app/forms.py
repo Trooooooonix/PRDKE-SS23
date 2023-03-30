@@ -45,7 +45,7 @@ class CompanyCreationForm(FlaskForm):
     submit = SubmitField('Create Company')
 
 
-class CompanyCreationForm(FlaskForm):
+class SecurityCreationForm(FlaskForm):
     class Meta:
         model = Security
 

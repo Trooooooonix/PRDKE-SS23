@@ -1,6 +1,6 @@
 from app import app
 from flask import Flask, render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, RegistrationForm, CompanyCreationForm
+from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Company, Account, Security, company_securities
 from app import db
@@ -135,11 +135,17 @@ def company_deletion(company_id):
 # ============================================================================================================
 # TODO: Everything needed for Securities
 # ============================================================================================================
+@app.route('/security/overview')
+@login_required
+def security_overview():
+    securities = Security.query.all()
+    return render_template('security_overview.html', title='Security Overview', securities=securities)
+
 
 @app.route('/security/creation', methods=['GET', 'POST'])
 @login_required
 def security_creation():
-    form = CompanyCreationForm()
+    form = SecurityCreationForm()
     if form.validate_on_submit():
         security = Security(name=form.sec_name.data,
                             price=form.price.data,
@@ -156,6 +162,16 @@ def security_creation():
         return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
 
+
+@app.route('/security/deletion/<int:security_id>', methods=['GET', 'DEL'])
+@login_required
+def security_deletion(security_id):
+    security = Security.query.get(security_id)
+    db.session.delete(security)
+    db.session.commit()
+    print(security)
+    flash(f'Security: {security.name} deleted successfully!')
+    return redirect(url_for('security_overview'))
 
 # ============================================================================================================
 # TODO: Everything needed for interaction with other applications
