@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Company Overview</h1>
+    <ul>
+        {% for company in companies %}
+            <li>
+                <strong>{{ company.company_name }}</strong>
+                <ul>
+                    <li>ID: {{ company.company_id }}</li>
+                    <li>Address: {{ company.address }}</li>
+                    <li>Employee Number: {{ company.employee_nr }}</li>
+                    <li>Company Info: {{ company.company_info }}</li>
+                    <li>Industry Type: {{ company.industry_type }}</li>
+                    <li>Opening Hours: {{ company.opening_hours }}</li>
+                    <li>Amount of Securities: {{ company.amount_securities }}</li>
+                    <li>Account Number: {{ company.account_nr }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

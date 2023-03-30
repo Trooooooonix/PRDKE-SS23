@@ -34,25 +34,27 @@ def load_user(id):
 # the next part is responsible for the database itself.
 class Company(db.Model):
     company_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, index=True, unique=True)
+    company_name = db.Column(db.Text, index=True, unique=True)
     address = db.Column(db.Text)
     employee_nr = db.Column(db.Integer)
-    info = db.Column(db.Text)
+    company_info = db.Column(db.Text)
     industry_type = db.Column(db.Text)
     opening_hours = db.Column(db.Text)
     amount_securities = db.Column(db.Text)
     account_nr = db.Column(db.Integer)
 
-    def __init__(self, name, address, employee_nr, info, industry_type, amount_securities, account_nr, opening_hours):
-        self.name = name
+    def __init__(self, company_name, address, employee_nr, company_info, industry_type, amount_securities, account_nr, opening_hours):
+        self.generate_company_id()
+        self.company_name = company_name
         self.address = address
         self.employee_nr = employee_nr
-        self.info = info
+        self.company_info = company_info
         self.industry_type = industry_type
         self.amount_securities = amount_securities
         self.account_nr = account_nr
         self.opening_hours = opening_hours
-        self.generate_company_id()
+        self.amount_securities = 0
+
 
     def generate_company_id(self):
         # query to get the most recent company
@@ -74,7 +76,7 @@ class Account(db.Model):
     def __init__(self, balance, owner):
         self.balance = balance
         self.owner = owner
-        generate_password_hash(self)
+        self.generate_account_id()
 
     def generate_account_id(self):
         # query to get the most recent company

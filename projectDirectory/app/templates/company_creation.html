@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Create Company</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.company_name.label }}<br>
+            {{ form.company_name(size=32) }}<br>
+            {% for error in form.company_name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.address.label }}<br>
+            {{ form.address(size=64) }}<br>
+            {% for error in form.address.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.industry_type.label }}<br>
+            {{ form.industry_type(size=32) }}<br>
+            {% for error in form.industry_type.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.opening_hours.label }}<br>
+            {{ form.opening_hours(size=32) }}<br>
+            {% for error in form.opening_hours.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.employee_nr.label }}<br>
+            {{ form.employee_nr(size=32) }}<br>
+            {% for error in form.employee_nr.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.company_info.label }}<br>
+            {{ form.company_info(size=32) }}<br>
+            {% for error in form.company_info.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

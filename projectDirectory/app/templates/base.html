@@ -11,7 +11,7 @@
         {# items in the navigationbar #}
         <div>
             Go to Homescreen:   <a href="{{ url_for('home_site') }}">Home</a>
-            Overview:           <a href="{{ url_for('overview') }}">Overview</a>
+            Overview:           <a href="{{ url_for('company_overview') }}">Overview</a>
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">Login</a>
             {% else %}
