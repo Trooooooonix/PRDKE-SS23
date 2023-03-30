@@ -65,7 +65,7 @@ class Company(db.Model):
             self.company_id = 1
 
     def __repr__(self):
-        return 'Company {}'.format(self.name + " " + self.address + " " + self.employee_nr)
+        return 'Company {}'.format(self.company_name, self.address, self.employee_nr)
 
 
 class Account(db.Model):
@@ -82,12 +82,12 @@ class Account(db.Model):
         # query to get the most recent company
         last_account = Account.query.order_by(Account.account_id.desc()).first()
         if last_account:
-            self.account_id = last_account.company_id + 1
+            self.account_id = last_account.account_id + 1
         else:
             self.account_id = 1
 
     def __repr__(self):
-        return '<Account: {}>'.format(self.account_id + " " + self.owner + ": " + self.balance)
+        return '<Account: {}>'.format(self.account_id, self.owner, self.balance)
 
 
 class Security(db.Model):
@@ -107,7 +107,8 @@ class Security(db.Model):
         self.market_id = market_id
 
     def __repr__(self):
-        return '<Security: {}>'.format(self.security_id + " " + self.name + ": " + self.price + " " + self.currency + " " + self.amount)
+        return '<Security: {}>'.format(self.security_id, self.name, self.price,
+                                       self.currency, self.amount)
 
 
 company_securities = db.Table('company_securities', db.Model.metadata,

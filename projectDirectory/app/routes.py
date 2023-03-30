@@ -7,6 +7,9 @@ from app import db
 from werkzeug.urls import url_parse
 
 
+# ============================================================================================================
+# Starting site
+# ============================================================================================================
 @app.route("/")
 @app.route("/index")
 @login_required
@@ -25,29 +28,14 @@ def home_site():
     return render_template('index.html', title='Home', user=user, posts=posts)
 
 
-@app.route("/overview")
-@login_required
-def overview():
-    user = {'username': 'Voestalpine'}
-    posts = [
-        {
-            'author': {'username': 'Employee-number'},
-            'body': '2435'
-        },
-        {
-            'author': {'username': 'Securities for Sale'},
-            'body': '19123 á 16€'
-        }
-    ]
-    return render_template('index.html', title='Overview', user=user, posts=posts)
+# ============================================================================================================
+# This method will load some basic data into the specific tables in order to have a decent starting point.
+# ============================================================================================================
 
 
-@app.route('/company/overview')
-def company_overview():
-    companies = Company.query.all()
-    return render_template('company_overview.html', title='Company Overview', companies=companies)
-
-
+# ============================================================================================================
+# Everything needed for USER
+# ============================================================================================================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # if user is already logged in
@@ -93,8 +81,16 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+# ============================================================================================================
+# Everything needed for COMPANY
+# ============================================================================================================
+@app.route('/company/overview')
+def company_overview():
+    companies = Company.query.all()
+    return render_template('company_overview.html', title='Company Overview', companies=companies)
 
-@app.route('/compay/creation', methods=['GET', 'POST'])
+
+@app.route('/company/creation', methods=['GET', 'POST', 'PUT'])
 def company_creation():
     form = CompanyCreationForm()
     if form.validate_on_submit():
@@ -106,15 +102,36 @@ def company_creation():
                           amount_securities=0,
                           account_nr=None,
                           opening_hours=form.opening_hours.data)
-
         db.session.add(company)
         db.session.commit()
 
         account = Account(owner=company.company_id, balance=0)
-
         db.session.add(account)
         db.session.commit()
-        flash(f'Congratulations, you have successfully created a company {company.company_name} '
+
+        company.account_nr = account.account_id
+        db.session.commit()
+
+        flash(f'Congratulations, you have successfully created the company: {company.company_name} '
               f'and its linked Account: {account.account_id}')
         return redirect(url_for('home_site'))
     return render_template('company_creation.html', title='Create Company', form=form)
+
+
+@app.route('/company/deletion/<int:company_id>', methods=['GET', 'DEL'])
+def company_deletion(company_id):
+    company = Company.query.get(company_id)
+    db.session.delete(company)
+    db.session.commit()
+    print(company)
+    flash('Firma "' + company.company_name + '" gelöscht!')
+    return redirect(url_for('company_overview'))
+
+# ============================================================================================================
+# Everything needed for Securities
+# ============================================================================================================
+
+
+# ============================================================================================================
+# Everything needed for interaction with other applications
+# ============================================================================================================
