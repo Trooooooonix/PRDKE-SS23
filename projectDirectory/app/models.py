@@ -57,7 +57,7 @@ class Company(db.Model):
 
 
     def generate_company_id(self):
-        # query to get the most recent company
+        # query to get the most recent one
         last_company = Company.query.order_by(Company.company_id.desc()).first()
         if last_company:
             self.company_id = last_company.company_id + 1
@@ -79,7 +79,7 @@ class Account(db.Model):
         self.generate_account_id()
 
     def generate_account_id(self):
-        # query to get the most recent company
+        # query to get the most recent one
         last_account = Account.query.order_by(Account.account_id.desc()).first()
         if last_account:
             self.account_id = last_account.account_id + 1
@@ -97,14 +97,24 @@ class Security(db.Model):
     currency = db.Column(db.String)
     name = db.Column(db.String, index=True, unique=True)
     market_id = db.Column(db.Integer)
+    comp_id = db.Column(db.Integer)
 
-    def __init__(self, security_id, price, amount, currency, name, comp_id, market_id):
-        self.security_id = security_id
+    def __init__(self, price, amount, currency, name, market_id, comp_id):
+        self.generate_security_id()
         self.price = price
         self.amount = amount
         self.currency = currency
         self.name = name
         self.market_id = market_id
+        self.comp_id = comp_id
+
+    def generate_security_id(self):
+        # query to get the most recent one
+        last_security = Security.query.order_by(Security.security_id.desc()).first()
+        if last_security:
+            self.security_id = last_security.security_id + 1
+        else:
+            self.security_id = 1
 
     def __repr__(self):
         return '<Security: {}>'.format(self.security_id, self.name, self.price,

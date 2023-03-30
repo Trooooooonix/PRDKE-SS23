@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from werkzeug.routing import ValidationError
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField, DecimalField, SelectField
 from wtforms.validators import DataRequired, optional, Email, EqualTo
 from app.models import User, Company, Security, company_securities, Account
 
@@ -43,3 +43,21 @@ class CompanyCreationForm(FlaskForm):
     industry_type = StringField('Which Industry does the Company work in?', validators=[DataRequired()])
     opening_hours = TextAreaField('Opening Hours', validators=[DataRequired()])
     submit = SubmitField('Create Company')
+
+
+class CompanyCreationForm(FlaskForm):
+    class Meta:
+        model = Security
+
+    sec_name = StringField('Name:', validators=[DataRequired()])
+    price = DecimalField('Price:', validators=[DataRequired()])
+    amount = IntegerField('Amount:', validators=[DataRequired()])
+    currency = StringField('Currency:', validators=[DataRequired()])
+
+    market_id = SelectField('On which market should it be available to buy?', validators=[DataRequired()],
+                            choices=[('1', 'Market 1'), ('2', 'Market 2'), ('3', 'Market 3')])
+
+    # companies = Company.query.all()
+    comp_id = SelectField('Which company is offering this security?', validators=[DataRequired()],
+                          choices=[('1', 'Comp 1'), ('2', 'Comp 2'), ('3', 'Comp 3')])
+    submit = SubmitField('Create Security')

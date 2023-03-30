@@ -4,6 +4,7 @@
     <h1>Hi, {{ current_user.username }}!</h1>
     {% if current_user.admin_tag %}
         <a href="{{ url_for('company_creation') }}">Create Company</a>
+        <a href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
     {% for post in posts %}
         <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>

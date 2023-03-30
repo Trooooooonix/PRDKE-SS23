@@ -29,7 +29,7 @@ def home_site():
 
 
 # ============================================================================================================
-# This method will load some basic data into the specific tables in order to have a decent starting point.
+# TODO: This method will load some basic data into the specific tables in order to have a decent starting point.
 # ============================================================================================================
 
 
@@ -73,7 +73,9 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, admin_tag=form.admin_tag.data)
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    admin_tag=form.admin_tag.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -85,12 +87,14 @@ def register():
 # Everything needed for COMPANY
 # ============================================================================================================
 @app.route('/company/overview')
+@login_required
 def company_overview():
     companies = Company.query.all()
     return render_template('company_overview.html', title='Company Overview', companies=companies)
 
 
 @app.route('/company/creation', methods=['GET', 'POST', 'PUT'])
+@login_required
 def company_creation():
     form = CompanyCreationForm()
     if form.validate_on_submit():
@@ -119,6 +123,7 @@ def company_creation():
 
 
 @app.route('/company/deletion/<int:company_id>', methods=['GET', 'DEL'])
+@login_required
 def company_deletion(company_id):
     company = Company.query.get(company_id)
     db.session.delete(company)
@@ -128,10 +133,30 @@ def company_deletion(company_id):
     return redirect(url_for('company_overview'))
 
 # ============================================================================================================
-# Everything needed for Securities
+# TODO: Everything needed for Securities
 # ============================================================================================================
+
+@app.route('/security/creation', methods=['GET', 'POST'])
+@login_required
+def security_creation():
+    form = CompanyCreationForm()
+    if form.validate_on_submit():
+        security = Security(name=form.sec_name.data,
+                            price=form.price.data,
+                            amount=form.amount.data,
+                            currency=form.currency.data,
+                            market_id=form.market_id.data,
+                            comp_id=form.comp_id.data)
+
+        db.session.add(security)
+        db.session.commit()
+
+        flash(f'Congratulations, you have successfully created the Security: {security.name} '
+              f'from company: {security.comp_id}')
+        return redirect(url_for('home_site'))
+    return render_template('security_creation.html', title='Create Security', form=form)
 
 
 # ============================================================================================================
-# Everything needed for interaction with other applications
+# TODO: Everything needed for interaction with other applications
 # ============================================================================================================
