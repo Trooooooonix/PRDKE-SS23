@@ -2,8 +2,10 @@
 
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
-    <a href="{{ url_for('company_creation') }}">Create Company</a>
+    {% if current_user.admin_tag %}
+        <a href="{{ url_for('company_creation') }}">Create Company</a>
+    {% endif %}
     {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+        <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
     {% endfor %}
 {% endblock %}
