@@ -6,7 +6,62 @@
         <a href="{{ url_for('company_creation') }}">Create Company</a>
         <a href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
-    {% for post in posts %}
-        <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-    {% endfor %}
+    <hr>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Employee Number</th>
+            <th>Industry Type</th>
+            <th>Company Info</th>
+            <th/>
+        </tr>
+        </thead>
+        <tbody>
+        {% for company in companies %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('company_details', company_id=company.company_id) }}">{{ company.company_name }}</a>
+                </td>
+                <td>{{ company.address }}</td>
+                <td>{{ company.employee_nr }}</td>
+                <td>{{ company.industry_type }}</td>
+                <td>{{ company.company_info }}</td>
+                <td><a class="btn btn-danger"
+                       href="{{ url_for('company_deletion',company_id = company.company_id) }}">löschen</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Currency</th>
+            <th>Amount available</th>
+            <th>Market</th>
+            <th>Company</th>
+            <th/>
+        </tr>
+        </thead>
+        <tbody>
+        {% for security in securities %}
+            <tr>
+                <td>{{ security.name }}</td>
+                <td>{{ security.price|round(3) }}</td>
+                <td>{{ security.currency }}</td>
+                <td>{{ security.amount }}</td>
+                <td>{{ security.market_id }}</td>
+                <td>{{ security.comp_id }}</td>
+                <td><a class="btn btn-danger"
+                       href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

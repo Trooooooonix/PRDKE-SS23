@@ -1,39 +1,39 @@
 <html>
 
-    <head>
-        {% if title %}
+<head>
+    {% if title %}
         <title>{{ title }}</title>
-        {% else %}
+    {% else %}
         <title>Base-Title</title>
+    {% endif %}
+</head>
+<body>
+{# items in the navigationbar #}
+<div>
+    Go to Homescreen: <a href="{{ url_for('home_site') }}">Home</a>
+    Company Overview: <a href="{{ url_for('company_overview') }}">Overview</a>
+    Security Overview: <a href="{{ url_for('security_overview') }}">Overview</a>
+    {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+    {% else %}
+        Logged in as: {{ current_user.username }}
+        {% if current_user.admin_tag %}
+            (ADMIN)
         {% endif %}
-    </head>
-    <body>
-        {# items in the navigationbar #}
-        <div>
-            Go to Homescreen:   <a href="{{ url_for('home_site') }}">Home</a>
-            Company Overview:           <a href="{{ url_for('company_overview') }}">Overview</a>
-            Security Overview:           <a href="{{ url_for('security_overview') }}">Overview</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-                Logged in as: {{ current_user.username }}
-                {% if current_user.admin_tag %}
-                    (ADMIN)
-                {% endif %}
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
-        </div>
-        <hr>
-        {% block content %}{% endblock %}
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
+</div>
+<hr>
+{% block content %}{% endblock %}
+<hr>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
         <ul>
             {% for message in messages %}
-            <li>{{ message }}</li>
+                <li>{{ message }}</li>
             {% endfor %}
         </ul>
-        {% endif %}
-        {% endwith %}
-    </body>
+    {% endif %}
+{% endwith %}
+</body>
 </html>

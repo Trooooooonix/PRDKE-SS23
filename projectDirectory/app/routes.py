@@ -15,18 +15,15 @@ from werkzeug.urls import url_parse
 @login_required
 def home_site():
     user = {'username': 'Andi'}
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    companies = Company.query.all()
+    securities = Security.query.all()
+    return render_template('index.html', title='Home', user=user, companies=companies, securities=securities)
 
+
+@app.route('/company/details/<int:company_id>')
+def company_details(company_id):
+    company = Company.query.get_or_404(company_id)
+    return render_template('company_details.html', company=company)
 
 # ============================================================================================================
 # TODO: This method will load some basic data into the specific tables in order to have a decent starting point.
