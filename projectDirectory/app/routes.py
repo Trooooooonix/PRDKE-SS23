@@ -176,3 +176,57 @@ def security_deletion(security_id):
 # ============================================================================================================
 # TODO: Everything needed for interaction with other applications
 # ============================================================================================================
+# ==============
+# GET
+# ==============
+@app.route('/firmen/wertpapiere/<int:market_id>', methods=['GET'])
+@login_required
+def get_specific_marketSec(market_id):
+    return market_id
+
+@app.route('/firmen/<int:comp_id>', methods=['GET'])
+@login_required
+def get_specific_company(comp_id):
+    return comp_id
+
+@app.route('/firmen', methods=['GET'])
+@login_required
+def get_companies():
+    return 1
+
+@app.route('/firmen/wertpapiere/<int:sec_id>', methods=['GET'])
+@login_required
+def get_specific_security(sec_id):
+    return sec_id
+
+@app.route('/firmen/wertpapiere', methods=['GET'])
+@login_required
+def get_securities():
+    return 1
+
+@app.route('/firmen/<int:comp_id>', methods=['GET'])
+@login_required
+def get_companies_sec(comp_id):
+    return comp_id
+
+# ==============
+# PUT
+# ==============
+@app.route('/firmen/wertpapier/bought/<int:sec_id>', methods=['PUT'])
+@login_required
+def put_boughtSec(sec_id):
+    return sec_id
+
+@app.route('/firmen/wertpapier/buy/<int:sec_id>', methods=['PUT'])
+@login_required
+def put_buySec(sec_id):
+    return sec_id
+
+# ==============
+# POST
+# ==============
+
+@app.route('/boerse/offer/<int:market_id>', methods=['POST'])
+@login_required
+def send_securities(market_id):
+    return market_id
