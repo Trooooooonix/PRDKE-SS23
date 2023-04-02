@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
+    <h1>Welcome to the company-management site, {{ current_user.username }}!</h1>
     {% if current_user.admin_tag %}
         <a href="{{ url_for('company_creation') }}">Create Company</a>
         <a href="{{ url_for('security_creation') }}">Create Security</a>
@@ -22,7 +22,9 @@
             <th>Employee Number</th>
             <th>Industry Type</th>
             <th>Company Info</th>
-            <th/>
+            {% if current_user.admin_tag %}
+                <th/>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -35,8 +37,10 @@
                 <td>{{ company.employee_nr }}</td>
                 <td>{{ company.industry_type }}</td>
                 <td>{{ company.company_info }}</td>
-                <td><a class="btn btn-danger"
-                       href="{{ url_for('company_deletion',company_id = company.company_id) }}">löschen</a></td>
+                {% if current_user.admin_tag %}
+                    <td><a class="btn btn-danger"
+                           href="{{ url_for('company_deletion',company_id = company.company_id) }}">löschen</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
@@ -60,7 +64,9 @@
             <th>Amount available</th>
             <th>Market</th>
             <th>Company</th>
-            <th/>
+            {% if current_user.admin_tag %}
+                <th/>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -72,8 +78,10 @@
                 <td>{{ security.amount }}</td>
                 <td>{{ security.market_id }}</td>
                 <td>{{ security.comp_id }}</td>
-                <td><a style="text-align: right" class="btn btn-danger"
-                       href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a></td>
+                {% if current_user.admin_tag %}
+                    <td><a style="text-align: right" class="btn btn-danger"
+                           href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

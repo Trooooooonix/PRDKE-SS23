@@ -1,12 +1,73 @@
 {% extends "base.html" %}
 
+{% block content %}
+    <h1> {{ company.company_name }}</h1>
+    <div>
+        <div style="display: flex; align-items: center">
+            <img src="{{ url_for('static', filename=company.company_name+'_house.jpg') }}" alt="image" width="300"
+                 height="400">
+            <div style="margin-top: 5px; margin-left: 5px">
+                <div>
+                    <h3>Number of employees:</h3>
+                    <p style="margin-left: 15px">{{ company.employee_nr }}</p>
+                </div>
+                <div>
+                    <h3>Address:</h3>
+                    <p style="margin-left: 15px">{{ company.address }}</p>
+                </div>
 
-<hr>
-<h1>{{ company.company_name }}</h1>
-<p><strong>Company ID:</strong> {{ company.company_id }}</p>
-<p><strong>Address:</strong> {{ company.address }}</p>
-<p><strong>Number of Employees:</strong> {{ company.employee_nr }}</p>
-<p><strong>Company Info:</strong> {{ company.company_info }}</p>
-<p><strong>Industry Type:</strong> {{ company.industry_type }}</p>
-<p><strong>Account Number:</strong> {{ company.account_nr }}</p>
-<p><strong>Opening Hours:</strong> {{ company.opening_hours }}</p>
+                <h3>Opening hours:</h3>
+                <p style="margin-left: 15px">{{ company.opening_hours }}</p>
+            </div>
+        </div>
+        <p style="text-align: left; margin-left: auto; margin-top: 0; font-size: 20px">
+            {{ company.company_info }}
+        </p>
+    </div>
+
+    <hr>
+
+    <h2>Available Securities of {{ company.company_name }}:</h2>
+    {% set security_list = securities() %}
+    {% if security_list %}
+
+        <table style="
+            border-collapse: collapse;
+            width: 100%;
+            text-align: left;
+            padding: 8px;
+            background-color: #f2f2f2;
+            color: #333"
+        >
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Currency</th>
+                <th>Amount available</th>
+                <th>Market</th>
+                <th>Company</th>
+                <th/>
+            </tr>
+            </thead>
+            <tbody>
+            {% for security in security_list %}
+                <tr>
+                    <td>{{ security.name }}</td>
+                    <td>{{ security.price|round(3) }}</td>
+                    <td>{{ security.currency }}</td>
+                    <td>{{ security.amount }}</td>
+                    <td>{{ security.market_id }}</td>
+                    <td>{{ security.comp_id }}</td>
+                    <td><a style="text-align: right" class="btn btn-danger"
+                           href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <tr>
+            <td>NO ENTRIES</td>
+        </tr>
+    {% endif %}
+{% endblock %}

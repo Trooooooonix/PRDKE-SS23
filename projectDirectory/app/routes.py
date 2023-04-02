@@ -20,11 +20,6 @@ def home_site():
     return render_template('index.html', title='Home', user=user, companies=companies, securities=securities)
 
 
-@app.route('/company/details/<int:company_id>')
-def company_details(company_id):
-    company = Company.query.get_or_404(company_id)
-    return render_template('company_details.html', company=company)
-
 # ============================================================================================================
 # TODO: This method will load some basic data into the specific tables in order to have a decent starting point.
 # ============================================================================================================
@@ -89,6 +84,12 @@ def company_overview():
     companies = Company.query.all()
     return render_template('company_overview.html', title='Company Overview', companies=companies)
 
+@app.route('/company/details/<int:company_id>')
+@login_required
+def company_details(company_id):
+    company = Company.query.get_or_404(company_id)
+    securities = Security.query.filter_by(comp_id=company_id).all
+    return render_template('company_details.html', title=company.company_name, company=company, securities=securities)
 
 @app.route('/company/creation', methods=['GET', 'POST', 'PUT'])
 @login_required
@@ -127,7 +128,7 @@ def company_deletion(company_id):
     db.session.commit()
     print(company)
     flash('Firma "' + company.company_name + '" gelöscht!')
-    return redirect(url_for('company_overview'))
+    return redirect(request.referrer or url_for('company_overview'))
 
 # ============================================================================================================
 # TODO: Everything needed for Securities
@@ -168,7 +169,7 @@ def security_deletion(security_id):
     db.session.commit()
     print(security)
     flash(f'Security: {security.name} deleted successfully!')
-    return redirect(url_for('security_overview'))
+    return redirect(request.referrer or url_for('security_overview'))
 
 # ============================================================================================================
 # TODO: Everything needed for interaction with other applications
