@@ -7,7 +7,14 @@
         <a href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
     <hr>
-    <table>
+    <table style="
+            border-collapse: collapse;
+            width: 100%;
+            text-align: left;
+            padding: 8px;
+            background-color: #f2f2f2;
+            color: #333"
+    >
         <thead>
         <tr>
             <th>Name</th>
@@ -37,7 +44,14 @@
 
     <hr>
 
-    <table>
+    <table style="
+            border-collapse: collapse;
+            width: 100%;
+            text-align: left;
+            padding: 8px;
+            background-color: #f2f2f2;
+            color: #333"
+    >
         <thead>
         <tr>
             <th>Name</th>
@@ -58,7 +72,7 @@
                 <td>{{ security.amount }}</td>
                 <td>{{ security.market_id }}</td>
                 <td>{{ security.comp_id }}</td>
-                <td><a class="btn btn-danger"
+                <td><a style="text-align: right" class="btn btn-danger"
                        href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a></td>
             </tr>
         {% endfor %}
