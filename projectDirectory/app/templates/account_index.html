@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="display: flex; align-items: center">
+        <h1> Balance: {{ account.balance }} </h1>
+
+        <form action="{{ url_for('add_balance', account_id=account.account_id) }}" method="PUT">
+            <input type="number" step=".01" name="balance">
+            <button type="submit">Add Balance</button>
+        </form>
+
+        <form action="{{ url_for('lower_balance', account_id=account.account_id) }}" method="PUT">
+            <input type="number" id="lowered_value" name="lowered_value" min="0" step=".01">
+            <a href="#" onClick="lowerBalance()">lower Balance</a>
+        </form>
+
+    </div>
+    <h3> Owner: {{ account.owner }}</h3>
+{% endblock %}

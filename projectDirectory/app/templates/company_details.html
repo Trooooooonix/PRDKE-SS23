@@ -25,6 +25,10 @@
         </p>
     </div>
 
+    {% if current_user.admin_tag %}
+        <a href="{{ url_for('account_index', account_id=company.account_nr) }}">Show Account-details</a>
+        <a href="{{ url_for('security_creation') }}">Create Security</a>
+    {% endif %}
     <hr>
 
     <h2>Available Securities of {{ company.company_name }}:</h2>

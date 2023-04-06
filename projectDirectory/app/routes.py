@@ -75,6 +75,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
+
 # ============================================================================================================
 # Everything needed for COMPANY
 # ============================================================================================================
@@ -84,12 +85,14 @@ def company_overview():
     companies = Company.query.all()
     return render_template('company_overview.html', title='Company Overview', companies=companies)
 
+
 @app.route('/company/details/<int:company_id>')
 @login_required
 def company_details(company_id):
     company = Company.query.get_or_404(company_id)
     securities = Security.query.filter_by(comp_id=company_id).all
     return render_template('company_details.html', title=company.company_name, company=company, securities=securities)
+
 
 @app.route('/company/creation', methods=['GET', 'POST', 'PUT'])
 @login_required
@@ -126,9 +129,37 @@ def company_deletion(company_id):
     company = Company.query.get(company_id)
     db.session.delete(company)
     db.session.commit()
-    print(company)
+    # print(company)
     flash('Firma "' + company.company_name + '" gelöscht!')
     return redirect(request.referrer or url_for('company_overview'))
+
+
+# ============================================================================================================
+# TODO: Everything needed for Account
+# ============================================================================================================
+@app.route('/associated_account/<int:account_id>', methods=['GET'])
+@login_required
+def account_index(account_id):
+    account = Account.query.get(account_id)
+    return render_template('account_index.html', title="Account overview", account=account)
+
+@app.route('/addBalance/<int:account_id>', methods=['PUT'])
+@login_required
+def add_balance(account_id):
+    acc = Account.query.get(account_id)
+    acc.balance += request.form['balance']
+    db.session.commit()
+    flash("Balance has been edited")
+    return redirect(request.referrer)
+
+@app.route('/lowerBalance/<int:account_id>', methods=['PUT'])
+@login_required
+def lower_balance(account_id):
+    acc = Account.query.get(account_id)
+    acc.balance -= request.form['balance']
+    db.session.commit()
+    flash("Balance has been edited")
+    return redirect(request.referrer)
 
 # ============================================================================================================
 # TODO: Everything needed for Securities
@@ -157,7 +188,7 @@ def security_creation():
 
         flash(f'Congratulations, you have successfully created the Security: {security.name} '
               f'from company: {security.comp_id}')
-        return redirect(url_for('home_site'))
+        return redirect(request.referrer or url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
 
 
@@ -171,6 +202,7 @@ def security_deletion(security_id):
     flash(f'Security: {security.name} deleted successfully!')
     return redirect(request.referrer or url_for('security_overview'))
 
+
 # ============================================================================================================
 # TODO: Everything needed for interaction with other applications
 # ============================================================================================================
@@ -182,30 +214,36 @@ def security_deletion(security_id):
 def get_specific_marketSec(market_id):
     return market_id
 
+
 @app.route('/firmen/<int:comp_id>', methods=['GET'])
 @login_required
 def get_specific_company(comp_id):
     return comp_id
+
 
 @app.route('/firmen', methods=['GET'])
 @login_required
 def get_companies():
     return 1
 
+
 @app.route('/firmen/wertpapiere/<int:sec_id>', methods=['GET'])
 @login_required
 def get_specific_security(sec_id):
     return sec_id
+
 
 @app.route('/firmen/wertpapiere', methods=['GET'])
 @login_required
 def get_securities():
     return 1
 
+
 @app.route('/firmen/<int:comp_id>', methods=['GET'])
 @login_required
 def get_companies_sec(comp_id):
     return comp_id
+
 
 # ==============
 # PUT
@@ -215,10 +253,12 @@ def get_companies_sec(comp_id):
 def put_boughtSec(sec_id):
     return sec_id
 
+
 @app.route('/firmen/wertpapier/buy/<int:sec_id>', methods=['PUT'])
 @login_required
 def put_buySec(sec_id):
     return sec_id
+
 
 # ==============
 # POST
