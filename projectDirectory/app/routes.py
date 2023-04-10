@@ -1,11 +1,14 @@
 from app import app
 from flask import Flask, render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm
+from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, \
+    MoneyInputForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Company, Account, Security, company_securities
 from app import db
 from werkzeug.urls import url_parse
 
+# TODO: ID von Firmen in Wertpapieren löschen
+#        bzw. Firmen mit aktiven Wertpapieren nicht löschen können
 
 # ============================================================================================================
 # Starting site
@@ -141,25 +144,34 @@ def company_deletion(company_id):
 @login_required
 def account_index(account_id):
     account = Account.query.get(account_id)
-    return render_template('account_index.html', title="Account overview", account=account)
+    inputForm = MoneyInputForm()
+    outputForm = MoneyOutputForm()
+    return render_template('account_index.html', title="Account overview", account=account,
+                           inputForm=inputForm, outputForm=outputForm)
 
-@app.route('/addBalance/<int:account_id>', methods=['PUT'])
+
+@app.route('/edit_balance/<int:account_id>', methods=['POST'])
 @login_required
-def add_balance(account_id):
+def edit_balance(account_id):
     acc = Account.query.get(account_id)
-    acc.balance += request.form['balance']
-    db.session.commit()
-    flash("Balance has been edited")
+
+    if 'inputForm' in request.form:
+        inputForm = MoneyInputForm(request.form)
+        acc.balance += inputForm.money.data
+        db.session.commit()
+        flash("Balance has been edited")
+        return redirect(request.referrer)
+
+    if 'outputForm' in request.form:
+        outputForm = MoneyOutputForm(request.form)
+        acc.balance -= outputForm.money.data
+        db.session.commit()
+        flash("Balance has been edited")
+        return redirect(request.referrer)
+
+    flash("There was an Error!")
     return redirect(request.referrer)
 
-@app.route('/lowerBalance/<int:account_id>', methods=['PUT'])
-@login_required
-def lower_balance(account_id):
-    acc = Account.query.get(account_id)
-    acc.balance -= request.form['balance']
-    db.session.commit()
-    flash("Balance has been edited")
-    return redirect(request.referrer)
 
 # ============================================================================================================
 # TODO: Everything needed for Securities

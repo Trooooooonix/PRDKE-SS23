@@ -61,3 +61,13 @@ class SecurityCreationForm(FlaskForm):
     comp_id = SelectField('Which company is offering this security?', validators=[DataRequired()],
                           choices=[('1', 'Comp 1'), ('2', 'Comp 2'), ('3', 'Comp 3')])
     submit = SubmitField('Create Security')
+
+
+class MoneyInputForm(FlaskForm):
+    money = DecimalField(validators=[DataRequired()])
+    submit = SubmitField('Increase Money')
+
+
+class MoneyOutputForm(FlaskForm):
+    money = DecimalField(validators=[DataRequired()])
+    submit = SubmitField('Decrease Money')
