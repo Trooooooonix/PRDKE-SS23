@@ -130,11 +130,29 @@ def company_creation():
 @login_required
 def company_deletion(company_id):
     company = Company.query.get(company_id)
+    # checking if there are securities still available
+    secs = Security.query.all()
+    filtered_secs = []
+    for x in secs:
+        if secs.comp_id == company.company_id:
+            filtered_secs.append(x)
+    if filtered_secs.length > 0:
+        flash('Still Securities available! Cannot delete')
+        return request.referrer
+
+    acc = Account.query.get(company.account_nr)
     db.session.delete(company)
     db.session.commit()
-    # print(company)
-    flash('Firma "' + company.company_name + '" gelöscht!')
+
+    db.session.delete(acc)
+    db.session.commit()
+
+    flash('Firma: "' + company.company_name +
+            f'and its linked Account: {acc.account_id} gelöscht!')
     return redirect(request.referrer or url_for('company_overview'))
+
+
+@app.route('/company')
 
 
 # ============================================================================================================
@@ -154,15 +172,16 @@ def account_index(account_id):
 @login_required
 def edit_balance(account_id):
     acc = Account.query.get(account_id)
+    form = request.form
 
-    if 'inputForm' in request.form:
+    if "inputForm" in form:
         inputForm = MoneyInputForm(request.form)
         acc.balance += inputForm.money.data
         db.session.commit()
         flash("Balance has been edited")
         return redirect(request.referrer)
 
-    if 'outputForm' in request.form:
+    if "outputForm" in form:
         outputForm = MoneyOutputForm(request.form)
         acc.balance -= outputForm.money.data
         db.session.commit()
@@ -236,7 +255,7 @@ def get_specific_company(comp_id):
 @app.route('/firmen', methods=['GET'])
 @login_required
 def get_companies():
-    return 1
+    return Company.query.all()
 
 
 @app.route('/firmen/wertpapiere/<int:sec_id>', methods=['GET'])

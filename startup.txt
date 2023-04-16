@@ -6,6 +6,10 @@
 # flask run
 
 
+# runs the
+# cd projectDirectory
+# python app.py
+
 
 
 USER ADMINS:
