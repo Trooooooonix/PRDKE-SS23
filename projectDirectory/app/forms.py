@@ -59,7 +59,9 @@ class SecurityCreationForm(FlaskForm):
 
     # companies = Company.query.all()
     comp_id = SelectField('Which company is offering this security?', validators=[DataRequired()],
-                          choices=[('1', 'Comp 1'), ('2', 'Comp 2'), ('3', 'Comp 3')])
+                          choices=[('1', 'Comp 1'), ('2', 'Comp 2'), ('3', 'Comp 3'),
+                                   ('4', 'Comp 4'), ('5', 'Comp 5'), ('6', 'Comp 6'),
+                                   ('7', 'Comp 7'), ('8', 'Comp 8'), ('9', 'Comp 9')])
     submit = SubmitField('Create Security')
 
 

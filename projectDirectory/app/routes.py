@@ -134,11 +134,11 @@ def company_deletion(company_id):
     secs = Security.query.all()
     filtered_secs = []
     for x in secs:
-        if secs.comp_id == company.company_id:
+        if x.comp_id == company.company_id:
             filtered_secs.append(x)
-    if filtered_secs.length > 0:
-        flash('Still Securities available! Cannot delete')
-        return request.referrer
+    if len(filtered_secs) > 0:
+        flash('Still securities available! Cannot delete company.')
+        return redirect(request.referrer or url_for('home_site'))
 
     acc = Account.query.get(company.account_nr)
     db.session.delete(company)
