@@ -7,8 +7,19 @@ from app.models import User, Company, Account, Security, company_securities
 from app import db
 from werkzeug.urls import url_parse
 
-# TODO: ID von Firmen in Wertpapieren löschen
-#        bzw. Firmen mit aktiven Wertpapieren nicht löschen können
+# TODO: DESIGN
+#       Darstellung Konto (bzw. Allgemein)
+#       Tabellen groupBy (company_id)
+#       Beispielbilder für Beispielfirmen
+#       Ansicht der Creation-Formulare
+
+# TODO: FUNKTIONEN
+#       Einzahlen/Auszahlen Konto
+#       USP (Excel import von Wertpapieren)
+#       Abfragen der Boersen
+#       Abfragen und Anzeigen der Firmen
+#       "on delete cascade" konsistent durchziehen
+#       Schnittstellen implementieren
 
 # ============================================================================================================
 # Starting site
@@ -136,6 +147,7 @@ def company_deletion(company_id):
     for x in secs:
         if x.comp_id == company.company_id:
             filtered_secs.append(x)
+
     if len(filtered_secs) > 0:
         flash('Still securities available! Cannot delete company.')
         return redirect(request.referrer or url_for('home_site'))
@@ -167,7 +179,7 @@ def account_index(account_id):
     return render_template('account_index.html', title="Account overview", account=account,
                            inputForm=inputForm, outputForm=outputForm)
 
-
+# Todo: IFs are not working, maybe another approach would be a script inside the html-file
 @app.route('/edit_balance/<int:account_id>', methods=['POST'])
 @login_required
 def edit_balance(account_id):
@@ -219,7 +231,7 @@ def security_creation():
 
         flash(f'Congratulations, you have successfully created the Security: {security.name} '
               f'from company: {security.comp_id}')
-        return redirect(request.referrer or url_for('home_site'))
+        return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
 
 

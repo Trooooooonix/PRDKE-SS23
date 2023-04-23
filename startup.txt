@@ -8,6 +8,9 @@
 
 # runs the
 # cd projectDirectory
+# py -3 -m venv venv
+# venv\Scripts\activate
+# "Run once" -> r
 # python app.py
 
 
