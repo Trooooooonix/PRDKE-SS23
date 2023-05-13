@@ -2,9 +2,9 @@
 
 {% block content %}
     <div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between">
-        <h1> Balance: {{ account.balance }} </h1>
+        <h1> Balance: {{ '{:.3f}'.format(account.balance) }} </h1>
 
-        <form action="{{ url_for('edit_balance', account_id=account.account_id, form="inputForm") }}" method="POST">
+        <form action="{{ url_for('edit_balance_up', account_id=account.account_id) }}" method="POST">
             <p>
                 {{ inputForm.money.label }}<br>
                 {{ inputForm.money }}<br>
@@ -15,7 +15,7 @@
             <p>{{ inputForm.submit() }}</p>
         </form>
 
-        <form action="{{ url_for('edit_balance', account_id=account.account_id, form="outputForm") }}" method="POST">
+        <form action="{{ url_for('edit_balance_down', account_id=account.account_id) }}" method="POST">
             <p>
                 {{ outputForm.money.label }}<br>
                 {{ outputForm.money }}<br>

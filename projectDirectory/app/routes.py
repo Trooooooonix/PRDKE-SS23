@@ -179,28 +179,25 @@ def account_index(account_id):
     return render_template('account_index.html', title="Account overview", account=account,
                            inputForm=inputForm, outputForm=outputForm)
 
-# Todo: IFs are not working, maybe another approach would be a script inside the html-file
-@app.route('/edit_balance/<int:account_id>', methods=['POST'])
+
+@app.route('/edit_balance_up/<int:account_id>', methods=['POST', 'PUT'])
 @login_required
-def edit_balance(account_id):
+def edit_balance_up(account_id):
     acc = Account.query.get(account_id)
-    form = request.form
+    form = MoneyInputForm(request.form)
+    acc.balance += form.money.data
+    db.session.commit()
+    flash("Balance has been edited")
+    return redirect(request.referrer)
 
-    if "inputForm" in form:
-        inputForm = MoneyInputForm(request.form)
-        acc.balance += inputForm.money.data
-        db.session.commit()
-        flash("Balance has been edited")
-        return redirect(request.referrer)
-
-    if "outputForm" in form:
-        outputForm = MoneyOutputForm(request.form)
-        acc.balance -= outputForm.money.data
-        db.session.commit()
-        flash("Balance has been edited")
-        return redirect(request.referrer)
-
-    flash("There was an Error!")
+@app.route('/edit_balance_down/<int:account_id>', methods=['POST', 'PUT'])
+@login_required
+def edit_balance_down(account_id):
+    acc = Account.query.get(account_id)
+    form = MoneyOutputForm(request.form)
+    acc.balance -= form.money.data
+    db.session.commit()
+    flash("Balance has been edited")
     return redirect(request.referrer)
 
 
