@@ -64,6 +64,12 @@ class Company(db.Model):
         else:
             self.company_id = 1
 
+    def to_dict(self):
+        return {'id': self.company_id, 'address': self.address, 'employee_nr': self.employee_nr,
+                'industry_type': self.industry_type, 'opening_hours': self.opening_hours,
+                'amount_securities': self.amount_securities, 'account_nr': self.account_nr,
+                'company_name': self.company_name, 'company_info': self.company_info}
+
     def __repr__(self):
         return 'Company {}'.format(self.company_name, self.address, self.employee_nr)
 
@@ -86,6 +92,9 @@ class Account(db.Model):
         else:
             self.account_id = 1
 
+    def to_dict(self):
+        return {'id': self.account_id, 'balance': self.balance, 'owner': self.owner}
+
     def __repr__(self):
         return '<Account: {}>'.format(self.account_id, self.owner, self.balance)
 
@@ -107,6 +116,10 @@ class Security(db.Model):
         self.name = name
         self.market_id = market_id
         self.comp_id = comp_id
+
+    def to_dict(self):
+        return {'id': self.security_id, 'price': self.price, 'amount': self.amount, 'currency': self.currency,
+                'name': self.name, 'market_id': self.market_id, 'comp_id': self.comp_id}
 
     def generate_security_id(self):
         # query to get the most recent one

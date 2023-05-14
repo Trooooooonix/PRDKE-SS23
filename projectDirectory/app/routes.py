@@ -1,11 +1,15 @@
+import json
+
 from app import app
-from flask import Flask, render_template, flash, redirect, url_for, request
+from flask import Flask, render_template, flash, redirect, url_for, request, make_response
 from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, \
     MoneyInputForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Company, Account, Security, company_securities
 from app import db
 from werkzeug.urls import url_parse
+from flask.json import JSONEncoder
+
 
 # TODO: DESIGN
 #       Darstellung Konto (bzw. Allgemein)
@@ -160,13 +164,11 @@ def company_deletion(company_id):
     db.session.commit()
 
     flash('Firma: "' + company.company_name +
-            f'and its linked Account: {acc.account_id} gelöscht!')
+          f'and its linked Account: {acc.account_id} gelöscht!')
     return redirect(request.referrer or url_for('company_overview'))
 
 
 @app.route('/company')
-
-
 # ============================================================================================================
 # TODO: Everything needed for Account
 # ============================================================================================================
@@ -189,6 +191,7 @@ def edit_balance_up(account_id):
     db.session.commit()
     flash("Balance has been edited")
     return redirect(request.referrer)
+
 
 @app.route('/edit_balance_down/<int:account_id>', methods=['POST', 'PUT'])
 @login_required
@@ -250,52 +253,74 @@ def security_deletion(security_id):
 # GET
 # ==============
 @app.route('/firmen/wertpapiere/<int:market_id>', methods=['GET'])
-@login_required
 def get_specific_marketSec(market_id):
-    return market_id
+    secs = Security.query.filter_by(market_id=market_id).all()
+    dict = [s.to_dict() for s in secs]
+    json_data = json.dumps(dict, cls=Encoder)
+    response = make_response(json_data)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 
 @app.route('/firmen/<int:comp_id>', methods=['GET'])
-@login_required
 def get_specific_company(comp_id):
-    return comp_id
+    comps = Company.query.filter_by(company_id=comp_id).all()
+    dict = [x.to_dict() for x in comps]
+    json_data = json.dumps(dict, cls=Encoder)
+    response = make_response(json_data)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 
 @app.route('/firmen', methods=['GET'])
-@login_required
 def get_companies():
-    return Company.query.all()
+    comps = Company.query.all()
+    dict = [x.to_dict() for x in comps]
+    json_data = json.dumps(dict, cls=Encoder)
+    response = make_response(json_data)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 
 @app.route('/firmen/wertpapiere/<int:sec_id>', methods=['GET'])
-@login_required
 def get_specific_security(sec_id):
-    return sec_id
+    secs = Security.query.get(sec_id)
+    dict = [x.to_dict() for x in secs]
+    json_data = json.dumps(dict, cls=Encoder)
+    response = make_response(json_data)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 
 @app.route('/firmen/wertpapiere', methods=['GET'])
-@login_required
 def get_securities():
-    return 1
+    secs = Security.query.all()
+    dict = [x.to_dict() for x in secs]
+    json_data = json.dumps(dict, cls=Encoder)
+    response = make_response(json_data)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 
-@app.route('/firmen/<int:comp_id>', methods=['GET'])
-@login_required
+@app.route('/firmen/securities/<int:comp_id>', methods=['GET'])
 def get_companies_sec(comp_id):
-    return comp_id
+    secs = Security.query.filter_by(comp_id=comp_id).all()
+    dict = [x.to_dict() for x in secs]
+    json_data = json.dumps(dict, cls=Encoder)
+    response = make_response(json_data)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 
 # ==============
 # PUT
 # ==============
 @app.route('/firmen/wertpapier/bought/<int:sec_id>', methods=['PUT'])
-@login_required
 def put_boughtSec(sec_id):
     return sec_id
 
 
 @app.route('/firmen/wertpapier/buy/<int:sec_id>', methods=['PUT'])
-@login_required
 def put_buySec(sec_id):
     return sec_id
 
@@ -305,6 +330,40 @@ def put_buySec(sec_id):
 # ==============
 
 @app.route('/boerse/offer/<int:market_id>', methods=['POST'])
-@login_required
 def send_securities(market_id):
     return market_id
+
+
+
+
+class Encoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Security):
+            return{
+                'security_id': obj.security_id,
+                'name': obj.name,
+                'price': obj.price,
+                'amount': obj.amount,
+                'currency': obj.currency,
+                'market_id': obj.market_id,
+                'comp_id': obj.comp_id
+            }
+        elif isinstance(obj, Company):
+            return {
+                'company_id': obj.company_id,
+                'name': obj.company_name,
+                'industry_type': obj.industry_type,
+                'employee_nr': obj.employee_nr,
+                'amount_securities': obj.amount_securities,
+                'address': obj.address,
+                'opening_hours': obj.opening_hours,
+                'account_nr': obj.account_nr,
+                'company_info': obj.company_info
+            }
+        elif isinstance(obj, Account):
+            return {
+                'account_id': obj.account_id,
+                'balance': obj.balance,
+                'owner': obj.owner
+            }
+        return super().default(obj)
