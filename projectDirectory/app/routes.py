@@ -276,7 +276,7 @@ def security_deletion(security_id):
 # ==============
 # GET
 # ==============
-@app.route('/firmen/wertpapiere/<int:market_id>', methods=['GET'])
+@app.route('/firmen/wertpapiere/market/<int:market_id>', methods=['GET'])
 def get_specific_marketSec(market_id):
     secs = Security.query.filter_by(market_id=market_id).all()
     dict = [s.to_dict() for s in secs]
@@ -308,7 +308,7 @@ def get_companies():
 
 @app.route('/firmen/wertpapiere/<int:sec_id>', methods=['GET'])
 def get_specific_security(sec_id):
-    secs = Security.query.get(sec_id)
+    secs = Security.query.filter_by(security_id=sec_id).all()
     dict = [x.to_dict() for x in secs]
     json_data = json.dumps(dict, cls=Encoder)
     response = make_response(json_data)
@@ -326,7 +326,7 @@ def get_securities():
     return response
 
 
-@app.route('/firmen/securities/<int:comp_id>', methods=['GET'])
+@app.route('/firmen/x/wertpapiere/<int:comp_id>', methods=['GET'])
 def get_companies_sec(comp_id):
     secs = Security.query.filter_by(comp_id=comp_id).all()
     dict = [x.to_dict() for x in secs]
@@ -358,8 +358,7 @@ def send_securities(market_id):
     return market_id
 
 
-
-
+# Encoder class in order to structure the JSON-Files
 class Encoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Security):
