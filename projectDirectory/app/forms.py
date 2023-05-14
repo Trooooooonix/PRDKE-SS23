@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed
 from werkzeug.routing import ValidationError
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField, DecimalField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField, DecimalField, \
+    SelectField, FileField
 from wtforms.validators import DataRequired, optional, Email, EqualTo
 from app.models import User, Company, Security, company_securities, Account
 
@@ -42,6 +44,7 @@ class CompanyCreationForm(FlaskForm):
     company_info = TextAreaField('About the Company (Info)')
     industry_type = StringField('Which Industry does the Company work in?', validators=[DataRequired()])
     opening_hours = TextAreaField('Opening Hours', validators=[DataRequired()])
+    picture = FileField('Picture', validators=[FileAllowed(['jpg'], 'Images only!')])
     submit = SubmitField('Create Company')
 
 

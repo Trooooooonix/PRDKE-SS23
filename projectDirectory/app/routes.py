@@ -1,4 +1,7 @@
 import json
+import os
+
+from werkzeug.utils import secure_filename
 
 from app import app
 from flask import Flask, render_template, flash, redirect, url_for, request, make_response
@@ -117,6 +120,19 @@ def company_details(company_id):
 def company_creation():
     form = CompanyCreationForm()
     if form.validate_on_submit():
+        # saving the companies picture in the static folder
+        if form.picture.data:
+            if form.picture.data.filename:
+                filename = secure_filename(form.picture.data.filename)
+            else:
+                filename = ''
+            file_ext = filename.split('.')[-1]
+            if file_ext in 'jpg':
+                file_path = os.path.join(app.root_path, 'static', form.company_name.data + str('_house.') + file_ext)
+                form.picture.data.save(file_path)
+            else:
+                flash('Invalid file type! Only JPG allowed')
+
         company = Company(company_name=form.company_name.data,
                           address=form.address.data,
                           employee_nr=form.employee_nr.data,
@@ -131,6 +147,7 @@ def company_creation():
         account = Account(owner=company.company_id, balance=0)
         db.session.add(account)
         db.session.commit()
+
 
         company.account_nr = account.account_id
         db.session.commit()
@@ -155,6 +172,13 @@ def company_deletion(company_id):
     if len(filtered_secs) > 0:
         flash('Still securities available! Cannot delete company.')
         return redirect(request.referrer or url_for('home_site'))
+
+    # deleting the companies picture
+    file_path = app.root_path + '/static/' + company.company_name + str('_house.jpg')
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    else:
+        flash('Filepath does not exist')
 
     acc = Account.query.get(company.account_nr)
     db.session.delete(company)
