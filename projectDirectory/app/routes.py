@@ -339,12 +339,12 @@ def get_companies_sec(comp_id):
 # ==============
 # PUT
 # ==============
-@app.route('/firmen/wertpapier/bought/<int:sec_id>', methods=['PUT'])
+@app.route('/firmen/wertpapier/kauf/<int:sec_id>', methods=['PUT'])
 def put_boughtSec(sec_id):
     return sec_id
 
 
-@app.route('/firmen/wertpapier/buy/<int:sec_id>', methods=['PUT'])
+@app.route('/firmen/wertpapier/verkauf/<int:sec_id>', methods=['PUT'])
 def put_buySec(sec_id):
     return sec_id
 
