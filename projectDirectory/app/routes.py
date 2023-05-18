@@ -326,7 +326,7 @@ def get_securities():
     return response
 
 
-@app.route('/firmen/x/wertpapiere/<int:comp_id>', methods=['GET'])
+@app.route('/firmen/specificCompany/wertpapiere/<int:comp_id>', methods=['GET'])
 def get_companies_sec(comp_id):
     secs = Security.query.filter_by(comp_id=comp_id).all()
     dict = [x.to_dict() for x in secs]
