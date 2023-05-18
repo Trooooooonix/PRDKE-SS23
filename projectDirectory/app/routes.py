@@ -11,7 +11,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Company, Account, Security, company_securities
 from app import db
 from werkzeug.urls import url_parse
-from flask.json import JSONEncoder
+from flask.json import JSONEncoder, jsonify
 
 
 # TODO: DESIGN
@@ -341,12 +341,61 @@ def get_companies_sec(comp_id):
 # ==============
 @app.route('/firmen/wertpapier/kauf/<int:sec_id>', methods=['PUT'])
 def put_boughtSec(sec_id):
-    return sec_id
+    secs = Security.query.get(sec_id)
+    if not secs:
+        return make_response(jsonify({'message': 'Security not found'}), 404)
+
+    amount = 0
+    price = 0
+    fee = 0
+
+    company = Company.query.get(secs.comp_id)
+    account = Account.query.get(company.account_nr)
+
+    data = request.get_json()
+    # check if needed data is provided
+    if 'price' not in data or 'amount' not in data or 'market_fee' not in data:
+        return make_response(jsonify({'message': 'Data needed not found'}), 404)
+
+    if 'amount' in data:
+        secs.amount += data['amount']
+        amount = data['amount']
+    if 'price' in data:
+        price = data['price']
+    if 'market_fee' in data:
+        fee = data['market_fee']
+
+    if account.balance < ((price * amount) * ((fee/100) + 1)):
+        return make_response(jsonify({'message': 'Company does not have enough money'}), 404)
+    else:
+        account.balance -= ((price * amount) * ((fee/100) + 1))
+
+    db.session.commit()
+    return make_response(jsonify({'message': 'Securities bought'}), 200)
 
 
 @app.route('/firmen/wertpapier/verkauf/<int:sec_id>', methods=['PUT'])
 def put_buySec(sec_id):
-    return sec_id
+    secs = Security.query.get(sec_id)
+    if not secs:
+        return make_response(jsonify({'message': 'Security not found'}), 404)
+
+    price = secs.price
+
+    company = Company.query.get(secs.comp_id)
+    account = Account.query.get(company.account_nr)
+
+    data = request.get_json()
+    if 'amount' in data:
+        secs.amount += data['amount']
+        amount = data['amount']
+    else:
+        return make_response(jsonify({'message': 'Data needed not found'}), 404)
+
+    account.balance += (price * amount)
+
+    db.session.commit()
+    return make_response(jsonify({'message': 'Securities bought'}), 200)
 
 
 # ==============
@@ -355,7 +404,7 @@ def put_buySec(sec_id):
 
 @app.route('/boerse/offer/<int:market_id>', methods=['POST'])
 def send_securities(market_id):
-    return market_id
+    return 1
 
 
 # Encoder class in order to structure the JSON-Files
