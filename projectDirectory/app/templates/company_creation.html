@@ -2,52 +2,52 @@
 
 {% block content %}
     <h1>Create Company</h1>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data" class="form">
         {{ form.hidden_tag() }}
-        <p>
+
+        <p class="form-group">
             {{ form.company_name.label }}<br>
-            {{ form.company_name(size=32) }}<br>
+            {{ form.company_name(size=50) }}<br>
             {% for error in form.company_name.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
+        <p class="form-group">
             {{ form.address.label }}<br>
-            {{ form.address(size=64) }}<br>
+            {{ form.address(size=50) }}<br>
             {% for error in form.address.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
+        <p class="form-group">
             {{ form.industry_type.label }}<br>
-            {{ form.industry_type(size=32) }}<br>
+            {{ form.industry_type(size=50) }}<br>
             {% for error in form.industry_type.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-
-        <p>
-            {{ form.opening_hours.label }}<br>
-            {{ form.opening_hours(size=32) }}<br>
-            {% for error in form.opening_hours.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
+        <p class="form-group">
             {{ form.employee_nr.label }}<br>
-            {{ form.employee_nr(size=32) }}<br>
+            {{ form.employee_nr(size=50) }}<br>
             {% for error in form.employee_nr.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
+        <p class="form-group">
+            {{ form.opening_hours.label }}<br>
+            {{ form.opening_hours(size=50) }}<br>
+            {% for error in form.opening_hours.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p class="form-group">
             {{ form.company_info.label }}<br>
-            {{ form.company_info(size=32) }}<br>
+            {{ form.company_info(size=50) }}<br>
             {% for error in form.company_info.errors %}
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
+        <p class="form-group">
             {{ form.picture.label }}<br>
             {{ form.picture(class="form-control-file", accept=".jpg") }}<br>
             {% for error in form.company_info.errors %}

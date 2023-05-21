@@ -1,6 +1,7 @@
 import json
 import os
 
+import requests
 from werkzeug.utils import secure_filename
 
 from app import app
@@ -243,6 +244,12 @@ def security_overview():
 def security_creation():
     form = SecurityCreationForm()
     if form.validate_on_submit():
+        sec = Security.query.all()
+        for x in sec:
+            if x.name == form.sec_name.data:
+                flash('Security with that name already exists')
+                return redirect(request.referrer)
+
         security = Security(name=form.sec_name.data,
                             price=form.price.data,
                             amount=form.amount.data,
@@ -253,8 +260,11 @@ def security_creation():
         db.session.add(security)
         db.session.commit()
 
+        market_msg = send_securities(security)
         flash(f'Congratulations, you have successfully created the Security: {security.name} '
-              f'from company: {security.comp_id}')
+              f'from company: {security.comp_id}.'
+              f'Message from Market: {market_msg}')
+
         return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
 
@@ -403,8 +413,20 @@ def put_buySec(sec_id):
 # ==============
 
 @app.route('/boerse/offer/<int:market_id>', methods=['POST'])
-def send_securities(market_id):
-    return 1
+def send_securities(security):
+    url = "http://localhost:50050/boersen/angebot" + security.market_id
+    data = json.dumps(security, csl=Encoder)
+    header = {
+        "Content-Type": "application/json"
+    }
+    response = requests.post(url, data, headers=header)
+
+    if response.status_code == 400:
+        return "Syntax wrong!"
+    elif response.status_code == 404:
+        return "Data wrong"
+
+    return "Successfully sent!"
 
 
 # Encoder class in order to structure the JSON-Files

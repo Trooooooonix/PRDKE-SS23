@@ -40,10 +40,10 @@ class CompanyCreationForm(FlaskForm):
 
     company_name = StringField('Name', validators=[DataRequired()])
     address = StringField('Address', validators=[DataRequired()])
-    employee_nr = IntegerField('Number of Employees')
-    company_info = TextAreaField('About the Company (Info)')
+    employee_nr = IntegerField('Number of Employees', render_kw={'class': 'form-control', 'style': 'width: 50ch'})
+    company_info = TextAreaField('About the Company (Info)', render_kw={'class': 'form-control', 'rows': 5, 'cols': 50})
     industry_type = StringField('Which Industry does the Company work in?', validators=[DataRequired()])
-    opening_hours = TextAreaField('Opening Hours', validators=[DataRequired()])
+    opening_hours = TextAreaField('Opening Hours', validators=[DataRequired()], render_kw={'class': 'form-control', 'rows': 5, 'cols': 50})
     picture = FileField('Picture', validators=[FileAllowed(['jpg'], 'Images only!')])
     submit = SubmitField('Create Company')
 
@@ -56,16 +56,16 @@ class SecurityCreationForm(FlaskForm):
     price = DecimalField('Price:', validators=[DataRequired()])
     amount = IntegerField('Amount:', validators=[DataRequired()])
     currency = StringField('Currency:', validators=[DataRequired()])
-
-    market_id = SelectField('On which market should it be available to buy?', validators=[DataRequired()],
-                            choices=[('1', 'Market 1'), ('2', 'Market 2'), ('3', 'Market 3')])
-
-    # companies = Company.query.all()
-    comp_id = SelectField('Which company is offering this security?', validators=[DataRequired()],
-                          choices=[('1', 'Comp 1'), ('2', 'Comp 2'), ('3', 'Comp 3'),
-                                   ('4', 'Comp 4'), ('5', 'Comp 5'), ('6', 'Comp 6'),
-                                   ('7', 'Comp 7'), ('8', 'Comp 8'), ('9', 'Comp 9')])
+    market_id = SelectField('On which market should it be available to buy?', validators=[DataRequired()])
+    comp_id = SelectField('Which company is offering this security?', validators=[DataRequired()])
     submit = SubmitField('Create Security')
+
+    # overrides the __init__ method in order to dynamically fetch names and ids of companies.
+    # It displays the company name in the selection form, but uses the company-id to save them at the right place
+    def __init__(self, *args, **kwargs):
+        super(SecurityCreationForm, self).__init__(*args, **kwargs)
+        self.market_id.choices = [('1', 'Market 1'), ('2', 'Market 2'), ('3', 'Market 3')]
+        self.comp_id.choices = [(str(company.company_id), company.company_name) for company in Company.query.all()]
 
 
 class MoneyInputForm(FlaskForm):
