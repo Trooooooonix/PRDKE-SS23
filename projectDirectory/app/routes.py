@@ -258,7 +258,7 @@ def security_creation():
         db.session.add(security)
         db.session.commit()
 
-        # market_msg = send_securities(security)
+        # market_msg = send_securities(security) (CLS-SOmething...error)
         comp_name = Company.query.get(security.comp_id)
         flash(f'Congratulations, you have successfully created the Security: {security.name} '
               f'from company: {comp_name}.')
