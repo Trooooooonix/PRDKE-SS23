@@ -53,11 +53,11 @@ class SecurityCreationForm(FlaskForm):
         model = Security
 
     sec_name = StringField('Name:', validators=[DataRequired()])
-    price = DecimalField('Price:', validators=[DataRequired()])
-    amount = IntegerField('Amount:', validators=[DataRequired()])
+    price = DecimalField('Price:', validators=[DataRequired()], render_kw={'class': 'form-control', 'style': 'width: 50ch'})
+    amount = IntegerField('Amount:', validators=[DataRequired()], render_kw={'class': 'form-control', 'style': 'width: 50ch'})
     currency = StringField('Currency:', validators=[DataRequired()])
-    market_id = SelectField('On which market should it be available to buy?', validators=[DataRequired()])
-    comp_id = SelectField('Which company is offering this security?', validators=[DataRequired()])
+    market_id = SelectField('Available Markets:', validators=[DataRequired()])
+    comp_id = SelectField('Available Companies:', validators=[DataRequired()])
     submit = SubmitField('Create Security')
 
     # overrides the __init__ method in order to dynamically fetch names and ids of companies.

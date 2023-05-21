@@ -32,20 +32,27 @@
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p class="form-group">
-            {{ form.market_id.label }}<br>
-            {{ form.market_id(size=10) }}<br>
-            {% for error in form.market_id.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p class="form-group">
-            {{ form.comp_id.label }}<br>
-            {{ form.comp_id(size=10) }}<br>
-            {% for error in form.comp_id.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        <div class="form-group" style="display: flex;">
+            <div style="vertical-align: top">
+                <p>
+                    {{ form.market_id.label }}<br>
+                    {{ form.market_id(size=10) }}<br>
+                    {% for error in form.market_id.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+            </div>
+            <div style="margin-left: 30px">
+                <p>
+                    {{ form.comp_id.label }}<br>
+                    {{ form.comp_id(size=10) }}<br>
+                    {% for error in form.comp_id.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
         <p>{{ form.submit() }}</p>
     </form>
 {% endblock %}
