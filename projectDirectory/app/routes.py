@@ -39,6 +39,8 @@ def home_site():
     user = {'username': 'Andi'}
     companies = Company.query.all()
     securities = Security.query.all()
+    companies.sort(key=lambda x: x.company_name)
+    securities.sort(key=lambda x: (x.name, x.comp_id))
     return render_template('index.html', title='Home', user=user, companies=companies, securities=securities)
 
 
