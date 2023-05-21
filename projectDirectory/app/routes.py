@@ -2,8 +2,9 @@ import json
 import os
 
 import requests
-from werkzeug.utils import secure_filename
 
+from werkzeug.utils import secure_filename
+from decimal import Decimal
 from app import app
 from flask import Flask, render_template, flash, redirect, url_for, request, make_response
 from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, \
@@ -366,16 +367,19 @@ def put_boughtSec(sec_id):
 
     if 'amount' in data:
         secs.amount += data['amount']
-        amount = data['amount']
+        amount = float(data['amount'])
     if 'price' in data:
-        price = data['price']
+        price = float(data['price'])
     if 'market_fee' in data:
-        fee = data['market_fee']
+        fee = float(data['market_fee'])
 
-    if account.balance < ((price * amount) * ((fee/100) + 1)):
+    result = (price * amount) * ((fee / 100) + 1)
+    result = Decimal(result)
+
+    if account.balance < result:
         return make_response(jsonify({'message': 'Company does not have enough money'}), 404)
     else:
-        account.balance -= ((price * amount) * ((fee/100) + 1))
+        account.balance = account.balance - result
 
     db.session.commit()
     return make_response(jsonify({'message': 'Securities bought'}), 200)
@@ -387,7 +391,7 @@ def put_buySec(sec_id):
     if not secs:
         return make_response(jsonify({'message': 'Security not found'}), 404)
 
-    price = secs.price
+    price = float(secs.price)
 
     company = Company.query.get(secs.comp_id)
     account = Account.query.get(company.account_nr)
@@ -395,11 +399,13 @@ def put_buySec(sec_id):
     data = request.get_json()
     if 'amount' in data:
         secs.amount += data['amount']
-        amount = data['amount']
+        amount = float(data['amount'])
     else:
         return make_response(jsonify({'message': 'Data needed not found'}), 404)
 
-    account.balance += (price * amount)
+    result = (price * amount)
+    result = Decimal(result)
+    account.balance += result
 
     db.session.commit()
     return make_response(jsonify({'message': 'Securities bought'}), 200)
