@@ -258,10 +258,11 @@ def security_creation():
         db.session.add(security)
         db.session.commit()
 
-        market_msg = send_securities(security)
+        # market_msg = send_securities(security)
+        comp_name = Company.query.get(security.comp_id)
         flash(f'Congratulations, you have successfully created the Security: {security.name} '
-              f'from company: {security.comp_id}.'
-              f'Message from Market: {market_msg}')
+              f'from company: {comp_name}.')
+              # f'Message from Market: {market_msg}')
 
         return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
@@ -417,7 +418,7 @@ def put_buySec(sec_id):
 
 @app.route('/boerse/offer/<int:market_id>', methods=['POST'])
 def send_securities(security):
-    url = "http://localhost:50050/boersen/angebot" + security.market_id
+    url = "http://localhost:50050/boersen/angebot/" + str(security.market_id)
     data = json.dumps(security, csl=Encoder)
     header = {
         "Content-Type": "application/json"
