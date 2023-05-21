@@ -188,7 +188,7 @@ def company_deletion(company_id):
     db.session.commit()
 
     flash('Firma: "' + company.company_name +
-          f'and its linked Account: {acc.account_id} gelöscht!')
+          f'" und der verlinkte Account: {acc.account_id} gelöscht!')
     return redirect(request.referrer or url_for('company_overview'))
 
 # ============================================================================================================
