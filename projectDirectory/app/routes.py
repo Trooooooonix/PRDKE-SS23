@@ -44,10 +44,6 @@ def home_site():
     return render_template('index.html', title='Home', user=user, companies=companies, securities=securities)
 
 
-# ============================================================================================================
-# TODO: This method will load some basic data into the specific tables in order to have a decent starting point.
-# ============================================================================================================
-
 
 # ============================================================================================================
 # Everything needed for USER
@@ -194,8 +190,6 @@ def company_deletion(company_id):
           f'and its linked Account: {acc.account_id} gelöscht!')
     return redirect(request.referrer or url_for('company_overview'))
 
-
-@app.route('/company')
 # ============================================================================================================
 # TODO: Everything needed for Account
 # ============================================================================================================
@@ -203,10 +197,11 @@ def company_deletion(company_id):
 @login_required
 def account_index(account_id):
     account = Account.query.get(account_id)
+    company = Company.query.filter_by(account_nr=account_id).first()
     inputForm = MoneyInputForm()
     outputForm = MoneyOutputForm()
     return render_template('account_index.html', title="Account overview", account=account,
-                           inputForm=inputForm, outputForm=outputForm)
+                           inputForm=inputForm, outputForm=outputForm, name=company)
 
 
 @app.route('/edit_balance_up/<int:account_id>', methods=['POST', 'PUT'])

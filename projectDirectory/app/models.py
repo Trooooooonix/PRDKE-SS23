@@ -71,7 +71,7 @@ class Company(db.Model):
                 'company_name': self.company_name, 'company_info': self.company_info}
 
     def __repr__(self):
-        return 'Company {}'.format(self.company_name, self.address, self.employee_nr)
+        return 'Company: {}'.format(self.company_name, self.address, self.employee_nr)
 
 
 class Account(db.Model):
