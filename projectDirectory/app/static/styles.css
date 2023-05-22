@@ -1,0 +1,18 @@
+/* styles.css */
+
+body {
+    /* Light mode styles */
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark-mode {
+    /* Dark mode styles */
+    background-color: #0d1117;
+    color: #ffffff;
+}
+
+table.table-condensed tr:hover,
+table.table-dark tr:hover {
+    background-color: #1a202c;
+}

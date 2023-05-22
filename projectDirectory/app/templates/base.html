@@ -1,11 +1,11 @@
 {% extends "bootstrap/base.html" %}
 
 {% block style %}
-{{ super() }}
+    {{ super() }}
+{#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">#}
 {% endblock %}
 
 <html>
-
 {% block head %}
     {{ super() }}
     {% if title %}
@@ -13,38 +13,72 @@
     {% else %}
         <title>Base-Title</title>
     {% endif %}
+    {#<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">#}
 {% endblock %}
+
 {% block body %}
-{# items in the navigationbar #}
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-    <div>Go to Homescreen: <a href="{{ url_for('home_site') }}">Home</a></div>
-    {% if current_user.admin_tag %}
-    <div>Company Overview: <a href="{{ url_for('company_overview') }}">Overview</a></div>
-    <div>Security Overview: <a href="{{ url_for('security_overview') }}">Overview</a></div>
-    {% endif %}
-    <div>
-        {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-        {% else %}
-            Logged in as: {{ current_user.username }}
-            {% if current_user.admin_tag %}
-                (ADMIN)
-            {% endif %}
-            <a href="{{ url_for('logout') }}">Logout</a>
+    {# items in the navigationbar #}
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
+        <div>Go to Homescreen: <a href="{{ url_for('home_site') }}">Home</a></div>
+
+        {#<div class="dark-mode-toggle">
+            <input type="checkbox" id="darkModeToggle">
+            <label for="darkModeToggle">Dark Mode</label>
+            <div class="switch"></div>
+        </div>#}
+
+        {% if current_user.admin_tag %}
+            <div>Company Overview: <a href="{{ url_for('company_overview') }}">Overview</a></div>
+            <div>Security Overview: <a href="{{ url_for('security_overview') }}">Overview</a></div>
         {% endif %}
+        <div>
+            {% if current_user.is_anonymous %}
+                <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+                Logged in as: {{ current_user.username }}
+                {% if current_user.admin_tag %}
+                    (ADMIN)
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+        </div>
     </div>
-</div>
-<hr>
-{% block content %}{% endblock %}
-<hr>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
+    <hr>
+
+    {#<script>
+        var toggle = document.getElementById('darkModeToggle');
+        var body = document.body;
+
+        // Check local storage for dark mode preference
+        var darkMode = localStorage.getItem('darkMode');
+        if (darkMode === 'true') {
+            toggle.checked = true;
+            body.classList.add('dark-mode');
+        }
+
+        // Handle dark mode toggle
+        toggle.addEventListener('change', function () {
+            if (this.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+    </script>#}
+
+
+    {% block content %}{% endblock %}
+    <hr>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 {% endblock %}
 </html>

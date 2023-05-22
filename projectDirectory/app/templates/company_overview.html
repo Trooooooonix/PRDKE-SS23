@@ -6,8 +6,13 @@
         {% for company in companies %}
             <li>
                 <strong>{{ company.company_name }}</strong>
-                <a class="btn btn-danger"
-                       href="{{ url_for('company_deletion',company_id = company.company_id) }}">löschen</a>
+                <td>
+                    <a class="btn"
+                       href="{{ url_for('company_deletion',company_id = company.company_id) }}"
+                       style="text-align: right; color: red">
+                        löschen
+                    </a>
+                </td>
                 <ul>
                     <li>ID: {{ company.company_id }}</li>
                     <li>Address: {{ company.address }}</li>
