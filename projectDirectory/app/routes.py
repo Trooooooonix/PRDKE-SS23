@@ -367,14 +367,13 @@ def put_boughtSec(sec_id):
         return make_response(jsonify({'message': 'Data needed not found'}), 404)
 
     if 'amount' in data:
-        secs.amount += data['amount']
         amount = float(data['amount'])
     if 'price' in data:
         price = float(data['price'])
     if 'market_fee' in data:
         fee = float(data['market_fee'])
 
-    result = (price * amount) * ((fee / 100) + 1)
+    result = (price * amount) + fee
     result = Decimal(result)
 
     if account.balance < result:
@@ -399,7 +398,6 @@ def put_buySec(sec_id):
 
     data = request.get_json()
     if 'amount' in data:
-        secs.amount += data['amount']
         amount = float(data['amount'])
     else:
         return make_response(jsonify({'message': 'Data needed not found'}), 404)

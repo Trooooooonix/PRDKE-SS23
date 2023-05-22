@@ -26,8 +26,8 @@
     </div>
 
     {% if current_user.admin_tag %}
-        <a href="{{ url_for('account_index', account_id=company.account_nr) }}">Show Account-details</a>
-        <a href="{{ url_for('security_creation') }}">Create Security</a>
+        <a style="margin-left: 20px" href="{{ url_for('account_index', account_id=company.account_nr) }}">Show Account-details</a>
+        <a style="margin-left: 20px" href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
     <hr>
 
@@ -35,14 +35,7 @@
     {% set security_list = securities() %}
     {% if security_list %}
 
-        <table style="
-            border-collapse: collapse;
-            width: 100%;
-            text-align: left;
-            padding: 8px;
-            background-color: #f2f2f2;
-            color: #333"
-        >
+        <table class="table table-hover table-condensed">
             <thead>
             <tr>
                 <th>Name</th>
@@ -63,8 +56,15 @@
                     <td>{{ security.amount }}</td>
                     <td>{{ security.market_id }}</td>
                     <td>{{ security.comp_id }}</td>
-                    <td><a style="text-align: right" class="btn btn-danger"
-                           href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a></td>
+                    {% if current_user.admin_tag %}
+                        <td>
+                            <a class="btn-block"
+                               href="{{ url_for('security_deletion',security_id = security.security_id) }}"
+                               style="text-align: right; color:red">
+                                löschen
+                            </a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

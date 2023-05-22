@@ -7,14 +7,7 @@
         <a href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
     <hr>
-    <table style="
-            border-collapse: collapse;
-            width: 100%;
-            text-align: left;
-            padding: 8px;
-            background-color: #f2f2f2;
-            color: #333"
-    >
+    <table class="table table-hover table-condensed">
         <thead>
         <tr>
             <th>Name</th>
@@ -38,8 +31,13 @@
                 <td>{{ company.industry_type }}</td>
                 <td>{{ company.company_info }}</td>
                 {% if current_user.admin_tag %}
-                    <td><a class="btn btn-danger"
-                           href="{{ url_for('company_deletion',company_id = company.company_id) }}">löschen</a></td>
+                    <td>
+                        <a class="btn"
+                           href="{{ url_for('company_deletion',company_id = company.company_id) }}"
+                           style="text-align: right; color: red">
+                            löschen
+                        </a>
+                    </td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -48,14 +46,7 @@
 
     <hr>
 
-    <table style="
-            border-collapse: collapse;
-            width: 100%;
-            text-align: left;
-            padding: 8px;
-            background-color: #f2f2f2;
-            color: #333"
-    >
+    <table class="table table-hover table-condensed">
         <thead>
         <tr>
             <th>Name</th>
@@ -79,8 +70,13 @@
                 <td>{{ security.market_id }}</td>
                 <td>{{ security.comp_id }}</td>
                 {% if current_user.admin_tag %}
-                    <td><a style="text-align: right" class="btn btn-danger"
-                           href="{{ url_for('security_deletion',security_id = security.security_id) }}">löschen</a></td>
+                    <td>
+                        <a class="btn-block"
+                           href="{{ url_for('security_deletion',security_id = security.security_id) }}"
+                           style="text-align: right; color:red">
+                            löschen
+                        </a>
+                    </td>
                 {% endif %}
             </tr>
         {% endfor %}
