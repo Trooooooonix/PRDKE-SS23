@@ -40,7 +40,6 @@ def home_site():
     return render_template('index.html', title='Home', user=user, companies=companies, securities=securities)
 
 
-
 # ============================================================================================================
 # Everything needed for USER
 # ============================================================================================================
@@ -143,7 +142,6 @@ def company_creation():
         db.session.add(account)
         db.session.commit()
 
-
         company.account_nr = account.account_id
         db.session.commit()
 
@@ -185,6 +183,7 @@ def company_deletion(company_id):
     flash('Firma: "' + company.company_name +
           f'" und der verlinkte Account: {acc.account_id} gelöscht!')
     return redirect(request.referrer or url_for('company_overview'))
+
 
 # ============================================================================================================
 # TODO: Everything needed for Account
@@ -253,11 +252,13 @@ def security_creation():
         db.session.add(security)
         db.session.commit()
 
-        # market_msg = send_securities(security) (CLS-SOmething...error)
+        # POST API
+        market_msg = str(send_securities(security))
+
         comp_name = Company.query.get(security.comp_id)
         flash(f'Congratulations, you have successfully created the Security: {security.name} '
-              f'from company: {comp_name}.')
-              # f'Message from Market: {market_msg}')
+              f'from company: {comp_name}.'
+              f'Message from Market: {market_msg}')
 
         return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
@@ -390,19 +391,19 @@ def put_buySec(sec_id):
 # ==============
 # POST
 # ==============
-
-@app.route('/boerse/offer/<int:market_id>', methods=['POST'])
 def send_securities(security):
-    url = "http://localhost:50050/boersen/angebot/" + str(security.market_id)
-    data = jsonify(security.to_dict())
-    header = {
-        "Content-Type": "application/json"
-    }
-    response = requests.post(url, data, headers=header)
+    url = "http://localhost:50052/markets/" + str(security.market_id) + "/offer"
+    data = security.to_dict()
+    response = requests.post(url, data=data)
 
-    if response.status_code == 400:
+    if response.status_code == 404:
+        return "Data wrong!"
+    elif response.status_code == 400:
         return "Syntax wrong!"
-    elif response.status_code == 404:
-        return "Data wrong"
+    else:
+        return "Successfully sent!"
 
-    return "Successfully sent!"
+
+@app.route('/markets/offer', methods=['POST'])
+def sendSecs():
+    return '', 200
