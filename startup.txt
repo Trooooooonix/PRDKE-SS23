@@ -1,18 +1,5 @@
-# cd projectDirectory
 # py -3 -m venv venv
-# venv\Scripts\activate
-# "Run once" -> r
-# $env:FLASK_APP = "app"    -> not needed (config)
-# flask run
-
-
-# runs the
-# cd projectDirectory
-# py -3 -m venv venv
-# venv\Scripts\activate
-# "Run once" -> r
-# python app.py
-
+# pip install -r requirements.txt
 
 
 USER ADMINS:
