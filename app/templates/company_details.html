@@ -31,7 +31,8 @@
            style="text-align: right; color: #0000FF">
             bearbeiten
         </a>
-        <a style="margin-left: 20px; color: #0000FF" href="{{ url_for('account_index', account_id=company.account_nr) }}">Show
+        <a style="margin-left: 20px; color: #0000FF"
+           href="{{ url_for('account_index', account_id=company.account_nr) }}">Show
             Account-details</a>
         <a style="margin-left: 20px; color: #0000FF" href="{{ url_for('security_creation') }}">Create Security</a>
 
@@ -58,7 +59,11 @@
             <tbody>
             {% for security in security_list %}
                 <tr>
-                    <td>{{ security.name }}</td>
+                    <td>
+                        <a style="color: #0000FF" href="{{ url_for('security_details', sec_id=security.security_id) }}">
+                            {{ security.name }}
+                        </a>
+                    </td>
                     <td>{{ security.price|round(3) }}</td>
                     <td>{{ security.currency }}</td>
                     <td>{{ security.amount }}</td>

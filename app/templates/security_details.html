@@ -33,35 +33,61 @@
 
     <hr>
 
-    <canvas id="line-chart" width="500" height="500">line-chart</canvas>
-
+    <div class="chart-container" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px">
+        <canvas id="line-chart" width="500" height="500">line-chart</canvas>
+        <canvas id="circle-chart" width="500" height="500">circle-chart</canvas>
+    </div>
+    {# Script for the Circle-Chart #}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Retrieve the data for the line chart (you can modify this as per your data structure)
+        {# Script for the circle-chart #}
+            var data = {
+                labels: ['Voestalpine A', 'Voestalpine B', 'Voestalpine C', 'KEBA 1', 'WACKER AUT'],
+                datasets: [{
+                    label: 'Amount',
+                    data: [12341, 1231, 11451, 9064, 2151],
+                    backgroundColor: ['#E63946', '#457B9D', '#1D3557', '#A8DADC', '#F1FAEE'],
+                    borderColor: ['#1D3557'],
+                    borderWidth: 1
+                }]
+            };
+            var options = {
+                responsive: false,
+                maintainAspectRatio: false
+            };
+
+            var ctx = document.getElementById('circle-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: options
+            });
+        });
+
+        {# Script for the Line-Chart #}
+        document.addEventListener('DOMContentLoaded', function () {
             var data = {
                 labels: ['13.05.2023', '17.05.2023', '24.05.2023', '28.05.2023', '01.06.2023',
                     '04.06.2023', '12.06.2023', '13.06.2023', '22.06.2023', '25.06.2023'],
                 datasets: [{
                     label: 'Sold',
-                    data: [100, 240, 130, 110, 370, 15, 6, 41, 500, 9], // Your integer values as points
-                    backgroundColor: 'rgba(0, 123, 255, 0.2)', // Background color of the line area
-                    borderColor: 'rgba(0, 123, 255, 1)', // Color of the line
+                    data: [100, 240, 130, 110, 370, 15, 6, 41, 500, 9],
+                    backgroundColor: ['#1D3557'],
+                    borderColor: ['#1D3557'],
                     borderWidth: 1 // Width of the line
                 }]
             };
 
-            // Chart configuration options
+            // Display options
             var options = {
-                responsive: false, // Make the chart responsive
-                maintainAspectRatio: false, // Do not maintain the aspect ratio
+                responsive: false, // Important to have at false, else the chart scales infinitely
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true // Start the y-axis at zero
                     }
                 }
             };
-
-            // Get the canvas element and create the line chart
             var ctx = document.getElementById('line-chart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
