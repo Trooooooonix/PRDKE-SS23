@@ -1,97 +1,99 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1> {{ company.company_name }}</h1>
-    <div>
-        <div style="display: flex; align-items: center">
-            <img src="{{ url_for('static', filename=company.company_name+'_house.jpg') }}" alt="image" width="300"
-                 height="400">
-            <div style="margin-top: 5px; margin-left: 5px">
-                <div>
-                    <h3>Number of employees:</h3>
-                    <p style="margin-left: 15px">{{ company.employee_nr }}</p>
-                </div>
-                <div>
-                    <h3>Address:</h3>
-                    <p style="margin-left: 15px">{{ company.address }}</p>
-                </div>
+    <div class="container">
+        <h1> {{ company.company_name }}</h1>
+        <div>
+            <div style="display: flex; align-items: center">
+                <img src="{{ url_for('static', filename=company.company_name+'_house.jpg') }}" alt="image" width="300"
+                     height="400">
+                <div style="margin-top: 5px; margin-left: 5px">
+                    <div>
+                        <h3>Number of employees:</h3>
+                        <p style="margin-left: 15px">{{ company.employee_nr }}</p>
+                    </div>
+                    <div>
+                        <h3>Address:</h3>
+                        <p style="margin-left: 15px">{{ company.address }}</p>
+                    </div>
 
-                <h3>Opening hours:</h3>
-                <p style="margin-left: 15px">{{ company.opening_hours }}</p>
+                    <h3>Opening hours:</h3>
+                    <p style="margin-left: 15px">{{ company.opening_hours }}</p>
+                </div>
             </div>
+            <p style="text-align: left; margin-left: auto; margin-top: 0; font-size: 20px">
+                {{ company.company_info }}
+            </p>
         </div>
-        <p style="text-align: left; margin-left: auto; margin-top: 0; font-size: 20px">
-            {{ company.company_info }}
-        </p>
-    </div>
 
-    {% if current_user.admin_tag %}
-        <a class="btn"
-           href="{{ url_for('update_comp',comp_id = company.company_id) }}"
-           style="text-align: right; color: blue">
-            bearbeiten
-        </a>
-        <a style="margin-left: 20px; color: blue"
-           href="{{ url_for('account_index', account_id=company.account_nr) }}">Show
-            Account-details</a>
-        <a style="margin-left: 20px; color: blue" href="{{ url_for('security_creation') }}">Create Security</a>
+        {% if current_user.admin_tag %}
+            <a class="href-blue"
+               href="{{ url_for('update_comp',comp_id = company.company_id) }}"
+               style="text-align: right;">
+                bearbeiten
+            </a>
+            <a class="href-blue" style="margin-left: 20px;"
+               href="{{ url_for('account_index', account_id=company.account_nr) }}">Show Account-details</a>
+            <a class="href-blue" style="margin-left: 20px;" href="{{ url_for('security_creation') }}">Create
+                Security</a>
 
-    {% endif %}
-    <hr>
+        {% endif %}
+        <hr>
 
-    <h2>Available Securities of {{ company.company_name }}:</h2>
-    {% set security_list = securities() %}
-    {% if security_list %}
+        <h2>Available Securities of {{ company.company_name }}:</h2>
+        {% set security_list = securities() %}
+        {% if security_list %}
 
-        <table class="table table-hover table-condensed">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Currency</th>
-                <th>Amount available</th>
-                <th>Market</th>
-                <th>Company</th>
-                <th/>
-                <th/>
-            </tr>
-            </thead>
-            <tbody>
-            {% for security in security_list %}
+            <table class="table table-hover table-condensed">
+                <thead>
                 <tr>
-                    <td>
-                        <a style="color: #CCCCCC" href="{{ url_for('security_details', sec_id=security.security_id) }}">
-                            {{ security.name }}
-                        </a>
-                    </td>
-                    <td>{{ security.price|round(3) }}</td>
-                    <td>{{ security.currency }}</td>
-                    <td>{{ security.amount }}</td>
-                    <td>{{ security.market_id }}</td>
-                    <td>{{ security.comp_id }}</td>
-                    {% if current_user.admin_tag %}
-                        <td>
-                            <a class="btn"
-                               href="{{ url_for('update_sec',sec_id = security.security_id) }}"
-                               style="text-align: right; color: blue">
-                                bearbeiten
-                            </a>
-                        </td>
-                        <td>
-                            <a class="btn-block"
-                               href="{{ url_for('security_deletion',security_id = security.security_id) }}"
-                               style="text-align: right; color:red">
-                                löschen
-                            </a>
-                        </td>
-                    {% endif %}
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Currency</th>
+                    <th>Amount available</th>
+                    <th>Market</th>
+                    <th>Company</th>
+                    <th/>
+                    <th/>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <tr>
-            <td>NO ENTRIES</td>
-        </tr>
-    {% endif %}
+                </thead>
+                <tbody>
+                {% for security in security_list %}
+                    <tr>
+                        <td>
+                            <a class="href-blue" href="{{ url_for('security_details', sec_id=security.security_id) }}">
+                                {{ security.name }}
+                            </a>
+                        </td>
+                        <td>{{ security.price|round(3) }}</td>
+                        <td>{{ security.currency }}</td>
+                        <td>{{ security.amount }}</td>
+                        <td>{{ security.market_id }}</td>
+                        <td>{{ security.comp_id }}</td>
+                        {% if current_user.admin_tag %}
+                            <td>
+                                <a class="btn"
+                                   href="{{ url_for('update_sec',sec_id = security.security_id) }}"
+                                   style="text-align: right; color: #1D3557">
+                                    bearbeiten
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn-block"
+                                   href="{{ url_for('security_deletion',security_id = security.security_id) }}"
+                                   style="text-align: right; color:red">
+                                    löschen
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <tr>
+                <td>NO ENTRIES</td>
+            </tr>
+        {% endif %}
+    </div>
 {% endblock %}

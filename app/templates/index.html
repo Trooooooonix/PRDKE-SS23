@@ -1,108 +1,113 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+    <div class="container">
     <h1>Welcome to the company-management site, {{ current_user.username }}!</h1>
     {% if current_user.admin_tag %}
-        <a style="color: blue" href="{{ url_for('company_creation') }}">Create Company</a>
-        <br>
-        <a style="color: blue" href="{{ url_for('security_creation') }}">Create Security</a>
+        <a class="href-blue" href="{{ url_for('company_creation') }}">Create Company</a>
+        <a class="href-blue" href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
     <hr>
-    <table class="table table-hover table-condensed">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Employee Number</th>
-            <th>Industry Type</th>
-            <th>Company Info</th>
-            {% if current_user.admin_tag %}
-                <th/>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for company in companies %}
+        <table class="table table-hover table-condensed">
+            <thead>
             <tr>
-                <td>
-                    <a style="color: blue" href="{{ url_for('company_details', company_id=company.company_id) }}">
-                        {{ company.company_name }}
-                    </a>
-                </td>
-                <td>{{ company.address }}</td>
-                <td>{{ company.employee_nr }}</td>
-                <td>{{ company.industry_type }}</td>
-                <td>{{ company.company_info }}</td>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Employee Number</th>
+                <th>Industry Type</th>
+                <th>Company Info</th>
                 {% if current_user.admin_tag %}
-                    <td>
-                        <a class="btn"
-                           href="{{ url_for('update_comp',comp_id = company.company_id) }}"
-                           style="text-align: right; color: blue">
-                            bearbeiten
-                        </a>
-                    </td>
-                {% endif %}
-                {% if current_user.admin_tag %}
-                    <td>
-                        <a class="btn"
-                           href="{{ url_for('company_deletion',company_id = company.company_id) }}"
-                           style="text-align: right; color: red">
-                            löschen
-                        </a>
-                    </td>
+                    <th/>
+                    <th/>
                 {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for company in companies %}
+                <tr>
+                    <td>
+                        <a class="href-blue" href="{{ url_for('company_details', company_id=company.company_id) }}">
+                            {{ company.company_name }}
+                        </a>
+                    </td>
+                    <td>{{ company.address }}</td>
+                    <td>{{ company.employee_nr }}</td>
+                    <td>{{ company.industry_type }}</td>
+                    <td>{{ company.company_info }}</td>
+                    {% if current_user.admin_tag %}
+                        <td>
+                            <a class="href-blue"
+                               href="{{ url_for('update_comp',comp_id = company.company_id) }}"
+                               style="text-align: right">
+                                bearbeiten
+                            </a>
+                        </td>
+                    {% endif %}
+                    {% if current_user.admin_tag %}
+                        <td>
+                            <a class="btn"
+                               href="{{ url_for('company_deletion',company_id = company.company_id) }}"
+                               style="text-align: right; color: red">
+                                löschen
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <hr>
-
-    <table class="table table-hover table-condensed">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Currency</th>
-            <th>Amount available</th>
-            <th>Market</th>
-            <th>Company</th>
-            {% if current_user.admin_tag %}
-                <th/>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for security in securities %}
+    <div class="container">
+        <table class="table table-hover table-condensed">
+            <thead>
             <tr>
-                <td>
-                    <a style="color: blue" href="{{ url_for('security_details', sec_id=security.security_id) }}">
-                        {{ security.name }}
-                    </a>
-                </td>
-                <td>{{ security.price|round(3) }}</td>
-                <td>{{ security.currency }}</td>
-                <td>{{ security.amount }}</td>
-                <td>{{ security.market_id }}</td>
-                <td>{{ security.comp_id }}</td>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Currency</th>
+                <th>Amount available</th>
+                <th>Market</th>
+                <th>Company</th>
                 {% if current_user.admin_tag %}
-                    <td>
-                        <a class="btn"
-                           href="{{ url_for('update_sec',sec_id = security.security_id) }}"
-                           style="text-align: right; color: blue">
-                            bearbeiten
-                        </a>
-                    </td>
-                    <td>
-                        <a class="btn-block"
-                           href="{{ url_for('security_deletion',security_id = security.security_id) }}"
-                           style="text-align: right; color:red">
-                            löschen
-                        </a>
-                    </td>
+                    <th/>
+                    <th/>
                 {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for security in securities %}
+                <tr>
+                    <td>
+                        <a class="href-blue" href="{{ url_for('security_details', sec_id=security.security_id) }}">
+                            {{ security.name }}
+                        </a>
+                    </td>
+                    <td>{{ security.price|round(3) }}</td>
+                    <td>{{ security.currency }}</td>
+                    <td>{{ security.amount }}</td>
+                    <td>{{ security.market_id }}</td>
+                    <td>{{ security.comp_id }}</td>
+                    {% if current_user.admin_tag %}
+                        <td>
+                            <a class="href-blue"
+                               href="{{ url_for('update_sec',sec_id = security.security_id) }}"
+                               style="text-align: right; align-content: flex-end;">
+                                bearbeiten
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn-block"
+                               href="{{ url_for('security_deletion',security_id = security.security_id) }}"
+                               style="text-align: right; color:red">
+                                löschen
+                            </a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

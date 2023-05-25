@@ -1,100 +1,102 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1> {{ security.name }}</h1>
-    <div>
-        <div style="display: flex; align-items: center">
-            <div style="margin-top: 5px; margin-left: 5px">
-                <div>
-                    <h4>ID:</h4>
-                    <p style="margin-left: 15px">{{ security.security_id }}</p>
-                </div>
-                <div>
-                    <h4>Price:</h4>
-                    <p style="margin-left: 15px">{{ security.price|string ~ " " ~ security.currency }}</p>
-                </div>
+    <div class="container">
+        <h1> {{ security.name }}</h1>
+        <div>
+            <div style="display: flex; align-items: center">
+                <div style="margin-top: 5px; margin-left: 5px">
+                    <div>
+                        <h4>ID:</h4>
+                        <p style="margin-left: 15px">{{ security.security_id }}</p>
+                    </div>
+                    <div>
+                        <h4>Price:</h4>
+                        <p style="margin-left: 15px">{{ security.price|string ~ " " ~ security.currency }}</p>
+                    </div>
 
-                <h4>Amount:</h4>
-                <p style="margin-left: 15px">{{ security.amount }}</p>
+                    <h4>Amount:</h4>
+                    <p style="margin-left: 15px">{{ security.amount }}</p>
+                </div>
             </div>
         </div>
-    </div>
-    {% if current_user.admin_tag %}
-        <a class="btn"
-           href="{{ url_for('update_sec',sec_id = security.security_id) }}"
-           style="text-align: right; color: blue">
-            bearbeiten
-        </a>
-        <a style="margin-left: 20px; color: blue"
-           href="{{ url_for('company_details', company_id=security.comp_id) }}">
-            Show company
-        </a>
-    {% endif %}
+        {% if current_user.admin_tag %}
+            <a class="btn"
+               href="{{ url_for('update_sec',sec_id = security.security_id) }}"
+               style="text-align: right; color: #1D3557">
+                bearbeiten
+            </a>
+            <a style="margin-left: 20px; color: #1D3557"
+               href="{{ url_for('company_details', company_id=security.comp_id) }}">
+                Show company
+            </a>
+        {% endif %}
 
-    <hr>
+        <hr style="border-color: #1D3557; border-width: 0.1rem; border-style: solid;">
 
-    <div class="chart-container" style="align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr">
-        <canvas id="line-chart" width="500" height="500" style="background-color: white">line-chart</canvas>
-        <canvas id="circle-chart" width="500" height="500" style="background-color: white">circle-chart</canvas>
-    </div>
-    {# Script for the Circle-Chart #}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        {# Script for the circle-chart #}
-            var data = {
-                labels: ['Voestalpine A', 'Voestalpine B', 'Voestalpine C', 'KEBA 1', 'WACKER AUT'],
-                datasets: [{
-                    label: 'Amount',
-                    data: [12341, 1231, 11451, 9064, 2151],
-                    backgroundColor: ['#E63946', '#457B9D', '#1D3557', '#A8DADC', '#F1FAEE'],
-                    borderColor: ['#1D3557'],
-                    borderWidth: 1
-                }]
-            };
-            var options = {
-                responsive: false,
-                maintainAspectRatio: false
-            };
+        <div class="chart-container">
+            <canvas id="line-chart" width="700" height="700" style="margin-left: 190px">line-chart</canvas>
+            <canvas id="circle-chart" width="700" height="700" style="margin-left: 200px">circle-chart</canvas>
+        </div>
+        {# Script for the Circle-Chart #}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                {# Script for the circle-chart #}
+                var data = {
+                    labels: ['Voestalpine A', 'Voestalpine B', 'Voestalpine C', 'KEBA 1', 'WACKER AUT'],
+                    datasets: [{
+                        label: 'Amount',
+                        data: [12341, 1231, 11451, 9064, 2151],
+                        backgroundColor: ['#E63946', '#457B9D', '#1D3557', '#A8DADC', '#F1FAEE'],
+                        borderColor: ['#1D3557'],
+                        borderWidth: 1
+                    }]
+                };
+                var options = {
+                    responsive: false,
+                    maintainAspectRatio: false
+                };
 
-            var ctx = document.getElementById('circle-chart').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: data,
-                options: options
+                var ctx = document.getElementById('circle-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: data,
+                    options: options
+                });
             });
-        });
 
-        {# Script for the Line-Chart #}
-        document.addEventListener('DOMContentLoaded', function () {
-            var data = {
-                labels: ['13.05.2023', '17.05.2023', '24.05.2023', '28.05.2023', '01.06.2023',
-                    '04.06.2023', '12.06.2023', '13.06.2023', '22.06.2023', '25.06.2023'],
-                datasets: [{
-                    label: 'Sold',
-                    data: [100, 240, 130, 110, 370, 15, 6, 41, 500, 9],
-                    backgroundColor: ['#1D3557'],
-                    borderColor: ['#1D3557'],
-                    borderWidth: 1 // Width of the line
-                }]
-            };
+            {# Script for the Line-Chart #}
+            document.addEventListener('DOMContentLoaded', function () {
+                var data = {
+                    labels: ['13.05.2023', '17.05.2023', '24.05.2023', '28.05.2023', '01.06.2023',
+                        '04.06.2023', '12.06.2023', '13.06.2023', '22.06.2023', '25.06.2023'],
+                    datasets: [{
+                        label: 'Sold',
+                        data: [100, 240, 130, 110, 370, 15, 6, 41, 500, 9],
+                        backgroundColor: ['#1D3557'],
+                        borderColor: ['#1D3557'],
+                        borderWidth: 1 // Width of the line
+                    }]
+                };
 
-            // Display options
-            var options = {
-                responsive: false, // Important to have at false, else the chart scales infinitely
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true // Start the y-axis at zero
+                // Display options
+                var options = {
+                    responsive: false, // Important to have at false, else the chart scales infinitely
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true // Start the y-axis at zero
+                        }
                     }
-                }
-            };
-            var ctx = document.getElementById('line-chart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: data,
-                options: options
+                };
+                var ctx = document.getElementById('line-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: options
+                });
             });
-        });
-    </script>
+        </script>
+    </div>
 
 {% endblock %}

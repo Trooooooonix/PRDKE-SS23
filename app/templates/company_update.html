@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="{{ url_for('update_comp', comp_id=object.company_id) }}" style="text-align: center" method="POST">
+    <form action="{{ url_for('update_comp', comp_id=object.company_id) }}" method="POST">
         <p class="form-group">
             <label for="id">ID:</label><br>
             <input name="object_id" value="{{ object.company_id }}"

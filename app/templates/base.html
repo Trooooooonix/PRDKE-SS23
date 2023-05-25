@@ -14,34 +14,40 @@
         <title>Base-Title</title>
     {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
 {% block body %}
+    <body style="background-image: url('/static/background.jpg');
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;"
+    >
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-        <div>Go to Homescreen: <a style="color: blue" href="{{ url_for('home_site') }}">Home</a></div>
+        <div>Go to Homescreen: <a class="href-blue" href="{{ url_for('home_site') }}">Home</a></div>
         {% if current_user.admin_tag %}
-            <div>Company Overview: <a style="color: blue" href="{{ url_for('company_overview') }}">Overview</a></div>
-            <div>Security Overview: <a style="color: blue" href="{{ url_for('security_overview') }}">Overview</a>
+            <div>Company Overview: <a class="href-blue" href="{{ url_for('company_overview') }}">Overview</a></div>
+            <div>Security Overview: <a class="href-blue" href="{{ url_for('security_overview') }}">Overview</a>
             </div>
         {% endif %}
         <div>
             {% if current_user.is_anonymous %}
-                <a style="color: blue" href="{{ url_for('login') }}">Login</a>
+                <a class="href-blue" href="{{ url_for('login') }}">Login</a>
             {% else %}
                 Logged in as: {{ current_user.username }}
                 {% if current_user.admin_tag %}
                     (ADMIN)
                 {% endif %}
-                <a style="color: white" href="{{ url_for('logout') }}">Logout</a>
+                <a class="href-blue" href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
         </div>
     </div>
 
-    <hr>
+    <hr style="border-color: #1D3557; border-width: 0.1rem; border-style: solid;">
 
     {% block content %}{% endblock %}
 
-    <hr>
+    <hr style="border-color: #1D3557; border-width: 0.1rem; border-style: solid;">
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul>
@@ -52,5 +58,5 @@
         {% endif %}
     {% endwith %}
 {% endblock %}
-
+</body>
 </html>

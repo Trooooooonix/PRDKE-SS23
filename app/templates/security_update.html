@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="{{ url_for('update_sec', sec_id=object.security_id) }}" style="text-align: center" method="POST">
+    <form action="{{ url_for('update_sec', sec_id=object.security_id) }}" style="text-align: left" method="POST">
         <p class="form-group">
             <label for="id">ID:</label><br>
             <input name="object_id" value="{{ object.security_id }}"
