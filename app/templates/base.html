@@ -2,7 +2,7 @@
 
 {% block style %}
     {{ super() }}
-{#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">#}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
 <html>
@@ -17,59 +17,30 @@
 {% endblock %}
 
 {% block body %}
-
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-        <div>Go to Homescreen: <a style="color: #0000FF" href="{{ url_for('home_site') }}">Home</a></div>
-
-        {#<div class="dark-mode-toggle">
-            <input type="checkbox" id="darkModeToggle">
-            <label for="darkModeToggle">Dark Mode</label>
-            <div class="switch"></div>
-        </div>#}
-
+        <div>Go to Homescreen: <a style="color: blue" href="{{ url_for('home_site') }}">Home</a></div>
         {% if current_user.admin_tag %}
-            <div>Company Overview: <a style="color: #0000FF" href="{{ url_for('company_overview') }}">Overview</a></div>
-            <div>Security Overview: <a style="color: #0000FF" href="{{ url_for('security_overview') }}">Overview</a></div>
+            <div>Company Overview: <a style="color: blue" href="{{ url_for('company_overview') }}">Overview</a></div>
+            <div>Security Overview: <a style="color: blue" href="{{ url_for('security_overview') }}">Overview</a>
+            </div>
         {% endif %}
         <div>
             {% if current_user.is_anonymous %}
-                <a style="color: #0000FF" href="{{ url_for('login') }}">Login</a>
+                <a style="color: blue" href="{{ url_for('login') }}">Login</a>
             {% else %}
                 Logged in as: {{ current_user.username }}
                 {% if current_user.admin_tag %}
                     (ADMIN)
                 {% endif %}
-                <a style="color: #0000FF" href="{{ url_for('logout') }}">Logout</a>
+                <a style="color: white" href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
         </div>
     </div>
+
     <hr>
 
-    {#<script>
-        var toggle = document.getElementById('darkModeToggle');
-        var body = document.body;
-
-        // Check local storage for dark mode preference
-        var darkMode = localStorage.getItem('darkMode');
-        if (darkMode === 'true') {
-            toggle.checked = true;
-            body.classList.add('dark-mode');
-        }
-
-        // Handle dark mode toggle
-        toggle.addEventListener('change', function () {
-            if (this.checked) {
-                body.classList.add('dark-mode');
-                localStorage.setItem('darkMode', 'true');
-            } else {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('darkMode', 'false');
-            }
-        });
-    </script>#}
-
-
     {% block content %}{% endblock %}
+
     <hr>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -81,4 +52,5 @@
         {% endif %}
     {% endwith %}
 {% endblock %}
+
 </html>

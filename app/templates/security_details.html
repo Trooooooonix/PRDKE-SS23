@@ -22,10 +22,10 @@
     {% if current_user.admin_tag %}
         <a class="btn"
            href="{{ url_for('update_sec',sec_id = security.security_id) }}"
-           style="text-align: right; color: #0000FF">
+           style="text-align: right; color: blue">
             bearbeiten
         </a>
-        <a style="margin-left: 20px; color: #0000FF"
+        <a style="margin-left: 20px; color: blue"
            href="{{ url_for('company_details', company_id=security.comp_id) }}">
             Show company
         </a>
@@ -33,9 +33,9 @@
 
     <hr>
 
-    <div class="chart-container" style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px">
-        <canvas id="line-chart" width="500" height="500">line-chart</canvas>
-        <canvas id="circle-chart" width="500" height="500">circle-chart</canvas>
+    <div class="chart-container" style="align-items: flex-start; display: grid; grid-template-columns: 1fr 1fr">
+        <canvas id="line-chart" width="500" height="500" style="background-color: white">line-chart</canvas>
+        <canvas id="circle-chart" width="500" height="500" style="background-color: white">circle-chart</canvas>
     </div>
     {# Script for the Circle-Chart #}
     <script>
