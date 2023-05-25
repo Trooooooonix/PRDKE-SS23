@@ -75,7 +75,11 @@
         <tbody>
         {% for security in securities %}
             <tr>
-                <td>{{ security.name }}</td>
+                <td>
+                    <a style="color: #0000FF" href="{{ url_for('security_details', sec_id=security.security_id) }}">
+                        {{ security.name }}
+                    </a>
+                </td>
                 <td>{{ security.price|round(3) }}</td>
                 <td>{{ security.currency }}</td>
                 <td>{{ security.amount }}</td>

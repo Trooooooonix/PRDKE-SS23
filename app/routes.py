@@ -2,6 +2,8 @@ import os
 import requests
 
 from flask import render_template, flash, redirect, url_for, request, make_response, jsonify, session
+from sqlalchemy import Integer
+
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, MoneyInputForm
 from app.models import User, Company, Account, Security
@@ -253,6 +255,13 @@ def security_overview():
     return render_template('security_overview.html', title='Security Overview', securities=securities)
 
 
+@app.route('/security/details/<int:sec_id>')
+@login_required
+def security_details(sec_id):
+    sec = Security.query.get_or_404(sec_id)
+    return render_template('security_details.html', title=sec.name, security=sec)
+
+
 @app.route('/security/creation', methods=['GET', 'POST'])
 @login_required
 def security_creation():
@@ -289,8 +298,12 @@ def security_creation():
 def update_sec(sec_id):
     sec = Security.query.get(sec_id)
     comp = Company.query.get(sec.comp_id)
+    amount = sec.amount
     if request.method == 'POST':
         sec.name = request.form['name']
+        sec.amount = request.form['amount']
+        if amount < int(sec.amount):
+            send_securities(sec)
 
         db.session.commit()
 

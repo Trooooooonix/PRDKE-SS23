@@ -14,6 +14,10 @@
                    style="width: 50ch" required><br>
         </p>
         <p class="form-group">
+            <label for="amount">Amount:</label><br>
+            <input name="amount" value="{{ object.amount }}" style="width: 50ch">
+        </p>
+        <p class="form-group">
             <label for="curr">Currency:</label><br>
             <input type="curr" name="curr" id="curr" value="{{ object.currency }}"
                    style="width: 50ch" required><br>
@@ -25,20 +29,14 @@
                    readonly>
         </p>
         <p class="form-group">
-            <label for="amount">Amount:</label><br>
-            <input name="amount" value="{{ object.amount }}"
-                   style="background-color: #f1f1f1; color: #999999; width: 50ch"
-                   readonly>
-        </p>
-        <p class="form-group">
             <label for="comp">Market:</label><br>
-            <input name="comp" value="{{ comp.company_name }}"
+            <input name="comp" value="{{ object.market_id }}"
                    style="background-color: #f1f1f1; color: #999999; width: 50ch"
                    readonly>
         </p>
         <p class="form-group">
             <label for="market">Company:</label><br>
-            <input name="market" value="{{ object.market_id }}"
+            <input name="market" value="{{ comp.company_name }}"
                    style="background-color: #f1f1f1; color: #999999; width: 50ch"
                    readonly>
         </p>

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> {{ security.name }}</h1>
+    <div>
+        <div style="display: flex; align-items: center">
+            <div style="margin-top: 5px; margin-left: 5px">
+                <div>
+                    <h4>ID:</h4>
+                    <p style="margin-left: 15px">{{ security.security_id }}</p>
+                </div>
+                <div>
+                    <h4>Price:</h4>
+                    <p style="margin-left: 15px">{{ security.price|string ~ " " ~ security.currency }}</p>
+                </div>
+
+                <h4>Amount:</h4>
+                <p style="margin-left: 15px">{{ security.amount }}</p>
+            </div>
+        </div>
+    </div>
+    {% if current_user.admin_tag %}
+        <a class="btn"
+           href="{{ url_for('update_sec',sec_id = security.security_id) }}"
+           style="text-align: right; color: #0000FF">
+            bearbeiten
+        </a>
+        <a style="margin-left: 20px; color: #0000FF"
+           href="{{ url_for('company_details', company_id=security.comp_id) }}">
+            Show company
+        </a>
+    {% endif %}
+
+    <hr>
+
+    <canvas id="line-chart" width="500" height="500">line-chart</canvas>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve the data for the line chart (you can modify this as per your data structure)
+            var data = {
+                labels: ['13.05.2023', '17.05.2023', '24.05.2023', '28.05.2023', '01.06.2023',
+                    '04.06.2023', '12.06.2023', '13.06.2023', '22.06.2023', '25.06.2023'],
+                datasets: [{
+                    label: 'Sold',
+                    data: [100, 240, 130, 110, 370, 15, 6, 41, 500, 9], // Your integer values as points
+                    backgroundColor: 'rgba(0, 123, 255, 0.2)', // Background color of the line area
+                    borderColor: 'rgba(0, 123, 255, 1)', // Color of the line
+                    borderWidth: 1 // Width of the line
+                }]
+            };
+
+            // Chart configuration options
+            var options = {
+                responsive: false, // Make the chart responsive
+                maintainAspectRatio: false, // Do not maintain the aspect ratio
+                scales: {
+                    y: {
+                        beginAtZero: true // Start the y-axis at zero
+                    }
+                }
+            };
+
+            // Get the canvas element and create the line chart
+            var ctx = document.getElementById('line-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: options
+            });
+        });
+    </script>
+
+{% endblock %}
