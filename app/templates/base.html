@@ -19,7 +19,7 @@
 {% block body %}
 
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
-        <div>Go to Homescreen: <a href="{{ url_for('home_site') }}">Home</a></div>
+        <div>Go to Homescreen: <a style="color: #0000FF" href="{{ url_for('home_site') }}">Home</a></div>
 
         {#<div class="dark-mode-toggle">
             <input type="checkbox" id="darkModeToggle">
@@ -28,18 +28,18 @@
         </div>#}
 
         {% if current_user.admin_tag %}
-            <div>Company Overview: <a href="{{ url_for('company_overview') }}">Overview</a></div>
-            <div>Security Overview: <a href="{{ url_for('security_overview') }}">Overview</a></div>
+            <div>Company Overview: <a style="color: #0000FF" href="{{ url_for('company_overview') }}">Overview</a></div>
+            <div>Security Overview: <a style="color: #0000FF" href="{{ url_for('security_overview') }}">Overview</a></div>
         {% endif %}
         <div>
             {% if current_user.is_anonymous %}
-                <a href="{{ url_for('login') }}">Login</a>
+                <a style="color: #0000FF" href="{{ url_for('login') }}">Login</a>
             {% else %}
                 Logged in as: {{ current_user.username }}
                 {% if current_user.admin_tag %}
                     (ADMIN)
                 {% endif %}
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <a style="color: #0000FF" href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
         </div>
     </div>

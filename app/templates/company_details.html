@@ -28,12 +28,12 @@
     {% if current_user.admin_tag %}
         <a class="btn"
            href="{{ url_for('update_comp',comp_id = company.company_id) }}"
-           style="text-align: right; color: blue">
+           style="text-align: right; color: #0000FF">
             bearbeiten
         </a>
-        <a style="margin-left: 20px" href="{{ url_for('account_index', account_id=company.account_nr) }}">Show
+        <a style="margin-left: 20px; color: #0000FF" href="{{ url_for('account_index', account_id=company.account_nr) }}">Show
             Account-details</a>
-        <a style="margin-left: 20px" href="{{ url_for('security_creation') }}">Create Security</a>
+        <a style="margin-left: 20px; color: #0000FF" href="{{ url_for('security_creation') }}">Create Security</a>
 
     {% endif %}
     <hr>
@@ -66,12 +66,12 @@
                     <td>{{ security.comp_id }}</td>
                     {% if current_user.admin_tag %}
                         <td>
-                        <a class="btn"
-                           href="{{ url_for('update_sec',sec_id = security.security_id) }}"
-                           style="text-align: right; color: blue">
-                            bearbeiten
-                        </a>
-                    </td>
+                            <a class="btn"
+                               href="{{ url_for('update_sec',sec_id = security.security_id) }}"
+                               style="text-align: right; color: #0000FF">
+                                bearbeiten
+                            </a>
+                        </td>
                         <td>
                             <a class="btn-block"
                                href="{{ url_for('security_deletion',security_id = security.security_id) }}"

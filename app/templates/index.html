@@ -3,8 +3,9 @@
 {% block content %}
     <h1>Welcome to the company-management site, {{ current_user.username }}!</h1>
     {% if current_user.admin_tag %}
-        <a href="{{ url_for('company_creation') }}">Create Company</a>
-        <a href="{{ url_for('security_creation') }}">Create Security</a>
+        <a style="color: #0000FF" href="{{ url_for('company_creation') }}">Create Company</a>
+        <br>
+        <a style="color: #0000FF" href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
     <hr>
     <table class="table table-hover table-condensed">
@@ -24,7 +25,7 @@
         {% for company in companies %}
             <tr>
                 <td>
-                    <a href="{{ url_for('company_details', company_id=company.company_id) }}">
+                    <a style="color: #0000FF" href="{{ url_for('company_details', company_id=company.company_id) }}">
                         {{ company.company_name }}
                     </a>
                 </td>
@@ -36,7 +37,7 @@
                     <td>
                         <a class="btn"
                            href="{{ url_for('update_comp',comp_id = company.company_id) }}"
-                           style="text-align: right; color: blue">
+                           style="text-align: right; color: #0000FF">
                             bearbeiten
                         </a>
                     </td>
@@ -84,7 +85,7 @@
                     <td>
                         <a class="btn"
                            href="{{ url_for('update_sec',sec_id = security.security_id) }}"
-                           style="text-align: right; color: blue">
+                           style="text-align: right; color: #0000FF">
                             bearbeiten
                         </a>
                     </td>
