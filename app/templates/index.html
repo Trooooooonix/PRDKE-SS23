@@ -82,6 +82,13 @@
                 <td>{{ security.comp_id }}</td>
                 {% if current_user.admin_tag %}
                     <td>
+                        <a class="btn"
+                           href="{{ url_for('update_sec',sec_id = security.security_id) }}"
+                           style="text-align: right; color: blue">
+                            bearbeiten
+                        </a>
+                    </td>
+                    <td>
                         <a class="btn-block"
                            href="{{ url_for('security_deletion',security_id = security.security_id) }}"
                            style="text-align: right; color:red">

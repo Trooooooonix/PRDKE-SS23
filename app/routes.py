@@ -285,6 +285,22 @@ def security_creation():
         return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
 
+@app.route('/firmen/security/<int:sec_id>', methods=['GET', 'POST'])
+def update_sec(sec_id):
+    sec = Security.query.get(sec_id)
+    comp = Company.query.get(sec.comp_id)
+    if request.method == 'POST':
+        sec.name = request.form['name']
+
+        db.session.commit()
+
+        flash('Security: "' + sec.name + '" updated. ')
+
+        previous_url = session.pop('previous_url', '/')
+        return redirect(previous_url)
+
+    session['previous_url'] = request.referrer
+    return render_template('update_sec.html', object=sec, comp=comp)
 
 @app.route('/security/deletion/<int:security_id>', methods=['GET', 'DEL'])
 @login_required
