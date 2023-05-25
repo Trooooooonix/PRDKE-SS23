@@ -170,7 +170,7 @@ def update_comp(comp_id):
         return redirect(previous_url)
 
     session['previous_url'] = request.referrer
-    return render_template('update_comp.html', object=comp)
+    return render_template('company_update.html', object=comp)
 
 
 @app.route('/company/deletion/<int:company_id>', methods=['GET', 'DEL'])
@@ -300,7 +300,7 @@ def update_sec(sec_id):
         return redirect(previous_url)
 
     session['previous_url'] = request.referrer
-    return render_template('update_sec.html', object=sec, comp=comp)
+    return render_template('security_update.html', object=sec, comp=comp)
 
 @app.route('/security/deletion/<int:security_id>', methods=['GET', 'DEL'])
 @login_required
