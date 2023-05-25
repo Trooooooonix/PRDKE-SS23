@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{{ url_for('update_comp', comp_id=object.company_id) }}" style="text-align: center" method="POST">
+        <p class="form-group">
+            <label for="id">ID:</label><br>
+            <input name="object_id" value="{{ object.company_id }}"
+                   style="background-color: #f1f1f1; color: #999999; width: 50ch"
+                   readonly>
+        </p>
+        <p class="form-group">
+            <label for="securs">Securities:</label><br>
+            <input name="securs" value="{{ object.company_securities }}"
+                   style="background-color: #f1f1f1; color: #999999; width: 50ch"
+                   readonly>
+        </p>
+        <p class="form-group">
+            <label for="name">Name:</label><br>
+            <input type="text" name="name" id="name" value="{{ object.company_name }}"
+                   style="width: 50ch" required><br>
+        </p>
+        <p class="form-group">
+            <label for="address">Address:</label><br>
+            <input name="address" id="address" style="width: 50ch" required value="{{ object.address }}">
+            <br>
+        </p>
+        <p class="form-group">
+            <label for="employee_nr">Employee Nr:</label><br>
+            <input name="employee_nr" id="employee_nr" style="text-align: left; width: 50ch"
+                   required
+                   value=" {{ object.employee_nr }}">
+            <br>
+        </p>
+        <p class="form-group">
+            <label for="ohours">Opening Hours:</label><br>
+            <input name="ohours" id="ohours" rows="5"
+                   style="text-align: left; width: 50ch"
+                   required
+                   value="{{ object.opening_hours }}"><br>
+        </p>
+        <p class="form-group">
+            <label for="industry_type">Industry-type:</label><br>
+            <input name="industry_type" id="industry_type" style="text-align: left; width: 50ch"
+                   required value="{{ object.industry_type }}">
+            <br>
+        </p>
+        <p class="form-group">
+            <label for="description">Description:</label><br>
+            <textarea name="description" id="description" rows="5"
+                      style="text-align: left; width: 50ch; resize: none" required>{{ object.company_info }}
+            </textarea><br>
+        </p>
+        <input type="submit" value="Save">
+    </form>
+
+{% endblock %}

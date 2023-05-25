@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import render_template, flash, redirect, url_for, request, make_response, jsonify
+from flask import render_template, flash, redirect, url_for, request, make_response, jsonify, session
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, MoneyInputForm
 from app.models import User, Company, Account, Security
@@ -117,7 +117,7 @@ def company_creation():
                 filename = ''
             file_ext = filename.split('.')[-1]
             if file_ext in 'jpg':
-                file_path = os.path.join(app.root_path, '../static', form.company_name.data + str('_house.') + file_ext)
+                file_path = os.path.join(app.root_path, 'static', form.company_name.data + str('_house.') + file_ext)
                 form.picture.data.save(file_path)
             else:
                 flash('Invalid file type! Only JPG allowed')
@@ -144,6 +144,33 @@ def company_creation():
               f'and its linked Account: {account.account_id}')
         return redirect(url_for('home_site'))
     return render_template('company_creation.html', title='Create Company', form=form)
+
+@app.route('/firmen/company/update/<int:comp_id>', methods=['GET', 'POST'])
+def update_comp(comp_id):
+    comp = Company.query.get(comp_id)
+    old_comp_name = comp.company_name
+    if request.method == 'POST':
+        comp.company_name = request.form['name']
+        comp.address = request.form['address']
+        comp.employee_nr = request.form['employee_nr']
+        comp.opening_hours = request.form['ohours']
+        comp.industry_type = request.form['industry_type']
+        comp.company_info = request.form['description']
+
+        db.session.commit()
+
+        new_name = comp.company_name + "_house.jpg"
+        old_path = os.path.join(app.static_folder, old_comp_name + '_house.jpg')
+        new_path = os.path.join(app.static_folder, new_name)
+        os.rename(old_path, new_path)
+
+        flash('Firma: "' + comp.company_name + '" updated. ')
+
+        previous_url = session.pop('previous_url', '/')
+        return redirect(previous_url)
+
+    session['previous_url'] = request.referrer
+    return render_template('update_comp.html', object=comp)
 
 
 @app.route('/company/deletion/<int:company_id>', methods=['GET', 'DEL'])

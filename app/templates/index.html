@@ -35,6 +35,15 @@
                 {% if current_user.admin_tag %}
                     <td>
                         <a class="btn"
+                           href="{{ url_for('update_comp',comp_id = company.company_id) }}"
+                           style="text-align: right; color: blue">
+                            bearbeiten
+                        </a>
+                    </td>
+                {% endif %}
+                {% if current_user.admin_tag %}
+                    <td>
+                        <a class="btn"
                            href="{{ url_for('company_deletion',company_id = company.company_id) }}"
                            style="text-align: right; color: red">
                             löschen

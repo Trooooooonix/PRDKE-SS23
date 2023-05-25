@@ -40,10 +40,10 @@ class CompanyCreationForm(FlaskForm):
 
     company_name = StringField('Name', validators=[DataRequired()])
     address = StringField('Address', validators=[DataRequired()])
-    employee_nr = IntegerField('Number of Employees', render_kw={'class': 'form-control', 'style': 'width: 50ch'})
+    employee_nr = IntegerField('Number of Employees', render_kw={'class': 'form-control', 'style': 'width: 52ch'})
     company_info = TextAreaField('About the Company (Info)', render_kw={'class': 'form-control', 'rows': 5, 'cols': 50})
     industry_type = StringField('Which Industry does the Company work in?', validators=[DataRequired()])
-    opening_hours = TextAreaField('Opening Hours', validators=[DataRequired()], render_kw={'class': 'form-control', 'rows': 5, 'cols': 50})
+    opening_hours = TextAreaField('Opening Hours', validators=[DataRequired()], render_kw={'class': 'form-control', 'rows': 5, 'cols': 1})
     picture = FileField('Picture', validators=[FileAllowed(['jpg'], 'Images only!')])
     submit = SubmitField('Create Company')
 
@@ -53,8 +53,8 @@ class SecurityCreationForm(FlaskForm):
         model = Security
 
     sec_name = StringField('Name:', validators=[DataRequired()])
-    price = DecimalField('Price:', validators=[DataRequired()], render_kw={'class': 'form-control', 'style': 'width: 50ch'})
-    amount = IntegerField('Amount:', validators=[DataRequired()], render_kw={'class': 'form-control', 'style': 'width: 50ch'})
+    price = DecimalField('Price:', validators=[DataRequired()], render_kw={'class': 'form-control', 'style': 'width: 52ch'})
+    amount = IntegerField('Amount:', validators=[DataRequired()], render_kw={'class': 'form-control', 'style': 'width: 52ch'})
     currency = StringField('Currency:', validators=[DataRequired()])
     market_id = SelectField('Available Markets:', validators=[DataRequired()])
     comp_id = SelectField('Available Companies:', validators=[DataRequired()])
