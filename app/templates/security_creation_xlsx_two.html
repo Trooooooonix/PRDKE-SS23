@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Additional confirmation</h1>
+    <div class="container">
+        <div class="container">
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Currency</th>
+                    <th>Amount available</th>
+                    <th>Market</th>
+                    <th>Company</th>
+                    {% if current_user.admin_tag %}
+                        <th/>
+                        <th/>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for security in securities %}
+                    <tr>
+                        <td>
+                            <a class="href-blue" href="{{ url_for('security_details', sec_id=security.security_id) }}">
+                                {{ security.name }}
+                            </a>
+                        </td>
+                        <td>{{ security.price|round(3) }}</td>
+                        <td>{{ security.currency }}</td>
+                        <td>{{ security.amount }}</td>
+                        <td>{{ security.market_id }}</td>
+                        <td>{{ security.comp_id }}</td>
+                        {% if current_user.admin_tag %}
+                            <td>
+                                <a class="href-blue"
+                                   href="{{ url_for('update_sec',sec_id = security.security_id) }}"
+                                   style="text-align: right; align-content: flex-end;">
+                                    bearbeiten
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn-block"
+                                   href="{{ url_for('security_deletion',security_id = security.security_id) }}"
+                                   style="text-align: right; color:red">
+                                    löschen
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="container">
+            <input type="submit" value="Submit" style="margin-top: 15px">
+        </div>
+    </div>
+
+{% endblock %}

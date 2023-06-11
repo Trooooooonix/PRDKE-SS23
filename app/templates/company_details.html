@@ -33,9 +33,15 @@
                 Edit
             </a>
             <a class="href-blue" style="margin-left: 20px;"
-               href="{{ url_for('account_index', account_id=company.account_nr) }}">Show Account-details</a>
-            <a class="href-blue" style="margin-left: 20px;" href="{{ url_for('security_creation') }}">Create
-                Security</a>
+               href="{{ url_for('account_index', account_id=company.account_nr) }}">
+                Show Account-details
+            </a>
+            <a class="href-blue" style="margin-left: 20px;" href="{{ url_for('security_creation') }}">
+                Create Security
+            </a>
+            <a class="href-blue" style="margin-left: 15px" href="{{ url_for('security_creation_xlsx') }}">
+                Create Security via Excel
+            </a>
 
         {% endif %}
         <hr>

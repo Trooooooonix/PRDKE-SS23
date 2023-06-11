@@ -1,11 +1,14 @@
 import os
-import requests
+
+import pandas as pd
+import requests, json
 
 from flask import render_template, flash, redirect, url_for, request, make_response, jsonify, session
 from sqlalchemy import Integer
 
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, MoneyInputForm
+from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, \
+    MoneyInputForm
 from app.models import User, Company, Account, Security
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -146,6 +149,7 @@ def company_creation():
               f'and its linked Account: {account.account_id}')
         return redirect(url_for('home_site'))
     return render_template('company_creation.html', title='Create Company', form=form)
+
 
 @app.route('/firmen/company/update/<int:comp_id>', methods=['GET', 'POST'])
 def update_comp(comp_id):
@@ -294,6 +298,61 @@ def security_creation():
         return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
 
+@app.route('/security/creation/xlsx', methods=['GET', 'POST'])
+@login_required
+def security_creation_xlsx():
+    if request.method == 'POST':
+        file = request.files['excel-file']
+        if file:
+            securities = []
+            # Read the Excel file into a DataFrame
+            df = pd.read_excel(file)
+
+            for index, row in df.iterrows():
+                name = row['name']
+                price = row['price']
+                amount = row['amount']
+                currency = row['currency']
+                company_id = row['company_id']
+                market_id = row['market_id']
+
+                # Create the Security object and add it to the database
+                security = Security(name=name, price=price, amount=amount, currency=currency,
+                                    comp_id=company_id, market_id=market_id)
+                securities.append(security.to_dict())
+
+            session['securities'] = jsonify(securities)
+            return redirect(url_for('security_creation_additional_confirmation'))
+
+    return render_template("security_creation_xlsx_one.html")
+
+
+@app.route('/security/creation/xlsx_two', methods=['GET', 'POST'])
+@login_required
+def security_creation_additional_confirmation():
+    secs_json = session.get('securities')
+
+    if not secs_json:
+        flash('No Excel-file given!')
+        return redirect(url_for('security_creation_xlsx'))
+
+    secs = json.loads(secs_json)
+
+    if request.method == 'POST':
+        for security in secs:
+            # Transforms dictionary back into Security object
+            security = Security(**sec_data)
+
+            db.session.add(security)
+        db.session.commit()
+
+        session.pop('securities', None)
+        flash('Successfully created securities!')
+        return redirect(url_for('home_site'))
+
+    return render_template("security_creation_xlsx_two.html", securities=secs)
+
+
 @app.route('/firmen/security/<int:sec_id>', methods=['GET', 'POST'])
 def update_sec(sec_id):
     sec = Security.query.get(sec_id)
@@ -314,6 +373,7 @@ def update_sec(sec_id):
 
     session['previous_url'] = request.referrer
     return render_template('security_update.html', object=sec, comp=comp)
+
 
 @app.route('/security/deletion/<int:security_id>', methods=['GET', 'DEL'])
 @login_required
@@ -454,4 +514,3 @@ def send_securities(security):
         return "Syntax wrong!"
     else:
         return "Successfully sent!"
-
