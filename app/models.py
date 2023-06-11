@@ -117,8 +117,8 @@ class Security(db.Model):
         self.comp_id = comp_id
 
     def to_dict(self):
-        return {'id': self.security_id, 'price': self.price, 'amount': self.amount, 'currency': self.currency,
-                'name': self.name, 'market_id': self.market_id, 'comp_id': self.comp_id}
+        return {"id": self.security_id, "price": self.price, "amount": self.amount, "currency": self.currency,
+                "name": self.name, "market_id": self.market_id, "comp_id": self.comp_id}
 
     def generate_security_id(self):
         # query to get the most recent one
