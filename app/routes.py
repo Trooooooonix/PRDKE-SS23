@@ -355,8 +355,8 @@ def get_companies():
 
 @app.route('/firmen/wertpapiere/<int:sec_id>', methods=['GET'])
 def get_specific_security(sec_id):
-    secs = Security.query.filter_by(security_id=sec_id).all()
-    dict = [x.to_dict() for x in secs]
+    sec = Security.query.get(sec_id)
+    dict = sec.to_dict()
     return jsonify(dict)
 
 

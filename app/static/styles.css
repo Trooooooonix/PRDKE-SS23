@@ -13,11 +13,18 @@ body {
 
 h1{
     color: #1D3557;
+    margin-left: 5px;
 }
 
 .href-blue {
     color: #1D3557;
+}
 
+.p {
+    text-align: left;
+    margin-left: auto;
+    margin-top: 0;
+    font-size: 20px
 }
 
 .href-blue:hover {

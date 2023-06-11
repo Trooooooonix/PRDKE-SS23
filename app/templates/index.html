@@ -6,7 +6,7 @@
     <h1>Welcome to the company-management site, {{ current_user.username }}!</h1>
     {% if current_user.admin_tag %}
         <a class="href-blue" href="{{ url_for('company_creation') }}">Create Company</a>
-        <a class="href-blue" href="{{ url_for('security_creation') }}">Create Security</a>
+        <a class="href-blue" style="margin-left: 15px" href="{{ url_for('security_creation') }}">Create Security</a>
     {% endif %}
     <hr>
         <table class="table table-hover table-condensed">

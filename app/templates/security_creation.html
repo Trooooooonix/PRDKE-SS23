@@ -2,57 +2,59 @@
 
 {% block content %}
     <h1>Create Security</h1>
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p class="form-group">
-            {{ form.sec_name.label }}<br>
-            {{ form.sec_name(size=50) }}<br>
-            {% for error in form.sec_name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p class="form-group">
-            {{ form.price.label }}<br>
-            {{ form.price(size=50) }}<br>
-            {% for error in form.price.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p class="form-group">
-            {{ form.amount.label }}<br>
-            {{ form.amount(size=50) }}<br>
-            {% for error in form.amount.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p class="form-group">
-            {{ form.currency.label }}<br>
-            {{ form.currency(size=50) }}<br>
-            {% for error in form.currency.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <div class="form-group" style="display: flex;">
-            <div style="vertical-align: top">
-                <p>
-                    {{ form.market_id.label }}<br>
-                    {{ form.market_id(size=10) }}<br>
-                    {% for error in form.market_id.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
+    <div class="container">
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p class="form-group">
+                {{ form.sec_name.label }}<br>
+                {{ form.sec_name(size=50) }}<br>
+                {% for error in form.sec_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p class="form-group">
+                {{ form.price.label }}<br>
+                {{ form.price(size=50) }}<br>
+                {% for error in form.price.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p class="form-group">
+                {{ form.amount.label }}<br>
+                {{ form.amount(size=50) }}<br>
+                {% for error in form.amount.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p class="form-group">
+                {{ form.currency.label }}<br>
+                {{ form.currency(size=50) }}<br>
+                {% for error in form.currency.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <div class="form-group" style="display: flex;">
+                <div style="vertical-align: top">
+                    <p>
+                        {{ form.market_id.label }}<br>
+                        {{ form.market_id(size=10) }}<br>
+                        {% for error in form.market_id.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                </div>
+                <div style="margin-left: 30px">
+                    <p>
+                        {{ form.comp_id.label }}<br>
+                        {{ form.comp_id(size=10) }}<br>
+                        {% for error in form.comp_id.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                </div>
+                <div style="clear: both;"></div>
             </div>
-            <div style="margin-left: 30px">
-                <p>
-                    {{ form.comp_id.label }}<br>
-                    {{ form.comp_id(size=10) }}<br>
-                    {% for error in form.comp_id.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-            </div>
-            <div style="clear: both;"></div>
-        </div>
-        <p>{{ form.submit() }}</p>
-    </form>
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
 {% endblock %}

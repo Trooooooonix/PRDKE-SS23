@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <h1> {{ company.company_name }}</h1>
     <div class="container">
-        <h1> {{ company.company_name }}</h1>
         <div>
             <div style="display: flex; align-items: center">
                 <img src="{{ url_for('static', filename=company.company_name+'_house.jpg') }}" alt="image" width="300"
@@ -21,7 +21,7 @@
                     <p style="margin-left: 15px">{{ company.opening_hours }}</p>
                 </div>
             </div>
-            <p style="text-align: left; margin-left: auto; margin-top: 0; font-size: 20px">
+            <p>
                 {{ company.company_info }}
             </p>
         </div>
@@ -30,7 +30,7 @@
             <a class="href-blue"
                href="{{ url_for('update_comp',comp_id = company.company_id) }}"
                style="text-align: right;">
-                bearbeiten
+                Edit
             </a>
             <a class="href-blue" style="margin-left: 20px;"
                href="{{ url_for('account_index', account_id=company.account_nr) }}">Show Account-details</a>
@@ -39,7 +39,6 @@
 
         {% endif %}
         <hr>
-
         <h2>Available Securities of {{ company.company_name }}:</h2>
         {% set security_list = securities() %}
         {% if security_list %}
