@@ -69,11 +69,14 @@ class SecurityCreationForm(FlaskForm):
         response = requests.get('http://localhost:50052/markets')
 
         if response.status_code == 200:
-            # Assuming the response contains a list of markets in JSON format
-            markets = response.json()
+            # Assuming the response contains a dictionary of markets in JSON format
+            markets_data = response.json()
+
+            # Combine all market objects into a single list
+            markets = [market for sublist in markets_data.values() for market in sublist]
 
             # Set the choices for self.market_id
-            self.market_id.choices = [(str(market['id']), market['name']) for market in markets]
+            self.market_id.choices = [(market['market_id'], market['market_name']) for market in markets]
         else:
             # Handle the case when the request fails
             # You can set some default choices or raise an error
