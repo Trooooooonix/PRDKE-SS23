@@ -321,7 +321,7 @@ def security_creation_xlsx():
                                     comp_id=company_id, market_id=market_id)
                 securities.append(security.to_dict())
 
-            session['securities'] = jsonify(securities)
+            session['securities'] = jsonify(securities).data
             return redirect(url_for('security_creation_additional_confirmation'))
 
     return render_template("security_creation_xlsx_one.html")
@@ -339,7 +339,8 @@ def security_creation_additional_confirmation():
     secs = json.loads(secs_json)
 
     if request.method == 'POST':
-        for security in secs:
+        for sec_data in secs:
+            sec_data.pop('id', None)
             # Transforms dictionary back into Security object
             security = Security(**sec_data)
 
