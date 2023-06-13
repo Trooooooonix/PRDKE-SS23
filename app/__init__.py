@@ -9,8 +9,11 @@ from flask_bootstrap import Bootstrap
 app = Flask(__name__)
 app.config.from_object(Config)
 
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:50050"}})
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:50052"}})
+CORS(app, resources={r"/*": {"origins": [
+                            "http://127.0.0.1:50050",
+                            "http://127.0.0.1:50052",
+                            "http://localhost:50050",
+                            "http://localhost:50052"]}})
 
 bootstrap = Bootstrap(app)
 
