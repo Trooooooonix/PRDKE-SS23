@@ -1,3 +1,4 @@
+import requests
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from werkzeug.routing import ValidationError
@@ -64,7 +65,19 @@ class SecurityCreationForm(FlaskForm):
     # It displays the company name in the selection form, but uses the company-id to save them at the right place
     def __init__(self, *args, **kwargs):
         super(SecurityCreationForm, self).__init__(*args, **kwargs)
-        self.market_id.choices = [('1', 'Market 1'), ('2', 'Market 2'), ('3', 'Market 3')]
+
+        response = requests.get('http://localhost:50052/markets')
+
+        if response.status_code == 200:
+            # Assuming the response contains a list of markets in JSON format
+            markets = response.json()
+
+            # Set the choices for self.market_id
+            self.market_id.choices = [(str(market['id']), market['name']) for market in markets]
+        else:
+            # Handle the case when the request fails
+            # You can set some default choices or raise an error
+            self.market_id.choices = []
         self.comp_id.choices = [(str(company.company_id), company.company_name) for company in Company.query.all()]
 
 
