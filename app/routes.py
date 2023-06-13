@@ -347,6 +347,10 @@ def security_creation_additional_confirmation():
             db.session.add(security)
         db.session.commit()
 
+        for x in secs:
+            send_securities(x)
+            flash('Successfully sent: ' + str(x.name))
+
         session.pop('securities', None)
         flash('Successfully created securities!')
         return redirect(url_for('home_site'))
