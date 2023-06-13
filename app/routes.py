@@ -505,8 +505,9 @@ def put_buySec(sec_id):
 def send_securities(security):
     url = "http://localhost:50052/markets/" + str(security.market_id) + "/offer"
     data = security.to_dict()
+    data_json = jsonify(data)
     header = {"Content-Type": "application/json"}
-    response = requests.post(url, data=data, headers=header)
+    response = requests.post(url, data=data_json, headers=header)
 
     if response.status_code == 404:
         return "Data wrong!"
