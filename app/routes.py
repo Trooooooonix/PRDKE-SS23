@@ -249,6 +249,21 @@ def edit_balance_down(account_id):
     return redirect(request.referrer)
 
 
+def get_course_money(target_rate, given_rate, money):
+    # EUR, USD, CHF, SEK, JPY
+    if target_rate != given_rate:
+        if given_rate == "EUR":
+            money *= 1.09
+        elif given_rate == "CHF":
+            money *= 1.12
+        elif given_rate == "SEK":
+            money *= 0.094
+        elif given_rate == "JPY":
+            money *= 0.0072
+    return money
+
+
+
 # ============================================================================================================
 # TODO: Everything needed for Securities
 # ============================================================================================================
