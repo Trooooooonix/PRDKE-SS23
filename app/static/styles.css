@@ -4,7 +4,7 @@ body {
     background-image: url("app/static/background.jpg");
     background-size: auto 100%;
     background-size: 100% auto;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(252,252,252, 0.5);
     background-repeat: no-repeat;
     background-attachment: fixed;
     color: #1D3557;
@@ -50,4 +50,8 @@ h1 {
 
 tr:hover {
 
+}
+
+.transparent-table {
+        background-color: rgba(255, 255, 255, 0.4);
 }

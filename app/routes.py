@@ -343,13 +343,17 @@ def security_creation_additional_confirmation():
             sec_data.pop('id', None)
             # Transforms dictionary back into Security object
             security = Security(**sec_data)
+            msg = send_securities(security)
+            if msg == "Successfully sent!":
+                db.session.add(security)
+                # print('Successfully sent: ' + str(security.name))
+            else:
+                print('skipped: ' + str(security.name))
+                continue
 
-            db.session.add(security)
         db.session.commit()
 
-        for x in secs:
-            send_securities(x)
-            flash('Successfully sent: ' + str(x.name))
+
 
         session.pop('securities', None)
         flash('Successfully created securities!')
