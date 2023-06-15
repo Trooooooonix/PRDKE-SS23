@@ -76,7 +76,7 @@ class SecurityCreationForm(FlaskForm):
             markets = [market for sublist in markets_data.values() for market in sublist]
 
             # Set the choices for self.market_id
-            self.market_id.choices = [(market['market_id'], market['market_name']) for market in markets]
+            self.market_id.choices = [(market['market_id'], market['market_name'] + " (" + str(market['market_currency_id']) + ")") for market in markets]
         else:
             # Handle the case when the request fails
             # You can set some default choices or raise an error

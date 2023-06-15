@@ -249,17 +249,15 @@ def edit_balance_down(account_id):
     return redirect(request.referrer)
 
 
-def get_course_money(target_rate, given_rate, money):
-    # EUR, USD, CHF, SEK, JPY
-    if target_rate != given_rate:
-        if given_rate == "EUR":
-            money *= 1.09
-        elif given_rate == "CHF":
-            money *= 1.12
-        elif given_rate == "SEK":
-            money *= 0.094
-        elif given_rate == "JPY":
-            money *= 0.0072
+def get_course_money(given_rate, money):
+    if given_rate == "EUR":
+        money *= 1.09
+    elif given_rate == "CHF":
+        money *= 1.12
+    elif given_rate == "SEK":
+        money *= 0.094
+    elif given_rate == "JPY":
+        money *= 0.0072
     return money
 
 
@@ -470,13 +468,14 @@ def put_boughtSec(sec_id):
     amount = 0
     price = 0
     fee = 0
+    currency = 0
 
     company = Company.query.get(secs.comp_id)
     account = Account.query.get(company.account_nr)
 
     data = request.get_json()
     # check if needed data is provided
-    if 'price' not in data or 'amount' not in data or 'market_fee' not in data:
+    if 'price' not in data or 'amount' not in data or 'market_fee' not in data or 'market_currency_code' not in data:
         return make_response(jsonify({'message': 'Data needed not found'}), 404)
 
     if 'amount' in data:
@@ -485,9 +484,12 @@ def put_boughtSec(sec_id):
         price = float(data['price'])
     if 'market_fee' in data:
         fee = float(data['market_fee'])
+    if 'market_currency_code' in data:
+        currency = float(data['market_currency_code'])
 
     result = (price * amount) + fee
     result = Decimal(result)
+    result = get_course_money(currency, result)
 
     if account.balance < result:
         return make_response(jsonify({'message': 'Company does not have enough money'}), 404)
@@ -504,19 +506,27 @@ def put_buySec(sec_id):
     if not secs:
         return make_response(jsonify({'message': 'Security not found'}), 404)
 
+
     price = float(secs.price)
+    currency = 0
+    amount = 0
 
     company = Company.query.get(secs.comp_id)
     account = Account.query.get(company.account_nr)
 
     data = request.get_json()
+    if 'amount' not in data or 'market_currency_code' in data:
+        return make_response(jsonify({'message': 'Data needed not found'}), 404)
+
     if 'amount' in data:
         amount = float(data['amount'])
-    else:
-        return make_response(jsonify({'message': 'Data needed not found'}), 404)
+    if 'market_currency_code' in data:
+        currency = float(data['market_currency_code'])
 
     result = (price * amount)
     result = Decimal(result)
+    result = get_course_money(currency, result)
+
     account.balance += result
 
     db.session.commit()

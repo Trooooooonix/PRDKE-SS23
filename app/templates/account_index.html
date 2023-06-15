@@ -2,7 +2,7 @@
 
 {% block content %}
     <div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between">
-        <h1> Balance: {{ '{:.3f}'.format(account.balance) }} </h1>
+        <h1> Balance: ${{ '{:.3f}'.format(account.balance) }} USD</h1>
 
         <form action="{{ url_for('edit_balance_up', account_id=account.account_id) }}" method="POST">
             <p>
