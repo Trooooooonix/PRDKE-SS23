@@ -94,13 +94,6 @@ def register():
 # ============================================================================================================
 # Everything needed for COMPANY
 # ============================================================================================================
-@app.route('/company/overview')
-@login_required
-def company_overview():
-    companies = Company.query.all()
-    return render_template('company_overview.html', title='Company Overview', companies=companies)
-
-
 @app.route('/company/details/<int:company_id>')
 @login_required
 def company_details(company_id):
@@ -265,13 +258,6 @@ def get_course_money(given_rate, money):
 # ============================================================================================================
 # TODO: Everything needed for Securities
 # ============================================================================================================
-@app.route('/security/overview')
-@login_required
-def security_overview():
-    securities = Security.query.all()
-    return render_template('security_overview.html', title='Security Overview', securities=securities)
-
-
 @app.route('/security/details/<int:sec_id>')
 @login_required
 def security_details(sec_id):

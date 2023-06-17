@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Edit Company:</h1>
     <div class="container">
-        <form action="{{ url_for('update_comp', comp_id=object.company_id) }}" method="POST">
+        <form action="{{ url_for('update_comp', comp_id=object.company_id) }}" method="POST" class="form">
             <p class="form-group">
                 <label for="id">ID:</label><br>
                 <input name="object_id" value="{{ object.company_id }}"

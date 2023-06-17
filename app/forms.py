@@ -62,7 +62,7 @@ class SecurityCreationForm(FlaskForm):
     submit = SubmitField('Create Security')
 
     # overrides the __init__ method in order to dynamically fetch names and ids of companies.
-    # It displays the company name in the selection form, but uses the company-id to save them at the right place
+    # It displays the company name in the selection form, but uses the company/market-id to save them at the right place
     def __init__(self, *args, **kwargs):
         super(SecurityCreationForm, self).__init__(*args, **kwargs)
 
@@ -70,14 +70,20 @@ class SecurityCreationForm(FlaskForm):
         response2 = requests.get('http://localhost:50052/markets/currency')
 
         if response.status_code == 200:
-            # Assuming the response contains a dictionary of markets in JSON format
             markets_data = response.json()
+            markets_currency_data = response2.json()
+
+            # Create a mapping of market_currency_id to market_currency_code
+            currency_mapping = {market['market_currency_id']: market['market_currency_code'] for market in
+                                markets_currency_data}
 
             # Combine all market objects into a single list
             markets = [market for sublist in markets_data.values() for market in sublist]
 
-            # Set the choices for self.market_id
-            self.market_id.choices = [(market['market_id'], market['market_name'] + " (" + str(market['market_currency_id']) + ")") for market in markets]
+            self.market_id.choices = [
+                (market['market_id'], f"{market['market_name']} ({currency_mapping.get(market['market_currency_id'])})")
+                for market in markets
+            ]
         else:
             self.market_id.choices = []
 

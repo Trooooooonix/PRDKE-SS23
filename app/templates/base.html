@@ -23,13 +23,22 @@
         background-repeat: no-repeat;
         background-attachment: fixed;"
     >
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center">
         <div>Go to Homescreen: <a class="href-blue" href="{{ url_for('home_site') }}">Home</a></div>
-        {% if current_user.admin_tag %}
-            <div>Company Overview: <a class="href-blue" href="{{ url_for('company_overview') }}">Overview</a></div>
-            <div>Security Overview: <a class="href-blue" href="{{ url_for('security_overview') }}">Overview</a>
-            </div>
-        {% endif %}
+        <div id="clock"></div>
+        <script>
+            function updateClock() {
+                var now = new Date();
+                var hours = now.getHours().toString().padStart(2, '0');
+                var minutes = now.getMinutes().toString().padStart(2, '0');
+                var seconds = now.getSeconds().toString().padStart(2, '0');
+                var time = hours + ':' + minutes + ':' + seconds;
+                document.getElementById('clock').textContent = time;
+            }
+
+            // Update the clock every second
+            setInterval(updateClock, 1000);
+        </script>
         <div>
             {% if current_user.is_anonymous %}
                 <a class="href-blue" href="{{ url_for('login') }}">Login</a>
