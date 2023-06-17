@@ -476,7 +476,7 @@ def put_boughtSec(sec_id):
     data = request.get_json()
     # check if needed data is provided
     if 'price' not in data or 'amount' not in data or 'market_fee' not in data or 'market_currency_code' not in data:
-        return make_response(jsonify({'message': 'Data needed not found'}), 404)
+        return jsonify({'message': 'Data needed not found'}), 404
 
     if 'amount' in data:
         amount = float(data['amount'])
@@ -492,45 +492,52 @@ def put_boughtSec(sec_id):
     result = get_course_money(currency, result)
 
     if account.balance < result:
-        return make_response(jsonify({'message': 'Company does not have enough money'}), 404)
+        return jsonify({'message': 'Company does not have enough money'}), 404
     else:
         account.balance = account.balance - result
 
     db.session.commit()
-    return make_response(jsonify({'message': 'Securities bought'}), 200)
+    return jsonify({'message': 'Securities bought'}), 200
 
 
 @app.route('/firmen/wertpapier/verkauf/<int:sec_id>', methods=['PUT'])
 def put_buySec(sec_id):
     secs = Security.query.get(sec_id)
     if not secs:
-        return make_response(jsonify({'message': 'Security not found'}), 404)
-
+        return jsonify({'message': 'Security not found'}), 404
 
     price = float(secs.price)
     currency = 0
     amount = 0
+    fees = 0
 
     company = Company.query.get(secs.comp_id)
     account = Account.query.get(company.account_nr)
 
     data = request.get_json()
     if 'amount' not in data or 'market_currency_code' in data:
-        return make_response(jsonify({'message': 'Data needed not found'}), 404)
+        return jsonify({'message': 'Data needed not found'}), 404
 
     if 'amount' in data:
         amount = float(data['amount'])
     if 'market_currency_code' in data:
         currency = float(data['market_currency_code'])
+    if 'fees' in data:
+        fees = data['fees']
+
 
     result = (price * amount)
     result = Decimal(result)
     result = get_course_money(currency, result)
 
-    account.balance += result
+    if (result + account.balance) < fees:
+        return jsonify({'message': 'Fees to high'}), 404
+    else:
+        result -= Decimal(fees)
+        account.balance += result
 
     db.session.commit()
-    return make_response(jsonify({'message': 'Securities bought'}), 200)
+    return jsonify({'message': 'Securities successfully bought'}), 200
 
 
 # ==============
