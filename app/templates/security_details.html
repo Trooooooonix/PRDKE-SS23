@@ -7,16 +7,13 @@
             <div style="display: flex; align-items: center">
                 <div style="margin-top: 5px; margin-left: 5px">
                     <div>
-                        <h4>ID:</h4>
-                        <p style="margin-left: 15px">{{ security.security_id }}</p>
+                        <h4>ID: {{ security.security_id }}</h4>
                     </div>
                     <div>
-                        <h4>Price:</h4>
-                        <p style="margin-left: 15px">{{ security.price|string ~ " " ~ security.currency }}</p>
+                        <h4>Price: {{ security.price|string ~ " " ~ security.currency }}</h4>
                     </div>
 
-                    <h4>Amount:</h4>
-                    <p style="margin-left: 15px">{{ security.amount }}</p>
+                    <h4>Amount: {{ security.amount }}</h4>
                 </div>
             </div>
         </div>
@@ -38,10 +35,10 @@
             <canvas id="line-chart" width="700" height="700" style="margin-left: 190px">line-chart</canvas>
             <canvas id="circle-chart" width="700" height="700" style="margin-left: 200px">circle-chart</canvas>
         </div>
-        {# Script for the Circle-Chart #}
+        {# Script for the charts #}
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                {# Script for the circle-chart #}
+                // Script for the circle-chart
                 var data = {
                     labels: ['Voestalpine A', 'Voestalpine B', 'Voestalpine C', 'KEBA 1', 'WACKER AUT'],
                     datasets: [{
@@ -65,7 +62,7 @@
                 });
             });
 
-            {# Script for the Line-Chart #}
+            // Script for the Line-Chart
             document.addEventListener('DOMContentLoaded', function () {
                 var data = {
                     labels: ['13.05.2023', '17.05.2023', '24.05.2023', '28.05.2023', '01.06.2023',
