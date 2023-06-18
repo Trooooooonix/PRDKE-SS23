@@ -1,6 +1,6 @@
 {% extends "bootstrap/base.html" %}
 
-{% block style %}
+{% block styles %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
@@ -14,7 +14,6 @@
         <title>Base-Title</title>
     {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -35,8 +34,6 @@
                 var time = hours + ':' + minutes + ':' + seconds;
                 document.getElementById('clock').textContent = time;
             }
-
-            // Update the clock every second
             setInterval(updateClock, 1000);
         </script>
         <div>
