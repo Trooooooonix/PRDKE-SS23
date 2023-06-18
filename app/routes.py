@@ -231,7 +231,7 @@ def edit_balance_down(account_id):
     flash("Balance has been edited")
     return redirect(request.referrer)
 
-
+# always calculates to USD
 def get_course_money(given_rate, money):
     if given_rate == "EUR":
         money *= 1.09
