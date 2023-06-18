@@ -5,7 +5,6 @@ import requests, json
 
 from flask import render_template, flash, redirect, url_for, request, make_response, jsonify, session
 from sqlalchemy import Integer
-
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, CompanyCreationForm, SecurityCreationForm, MoneyOutputForm, \
     MoneyInputForm
@@ -15,15 +14,6 @@ from werkzeug.utils import secure_filename
 from werkzeug.urls import url_parse
 from decimal import Decimal
 
-
-# TODO: DESIGN
-#       Darstellung Konto (bzw. Allgemein)
-
-# TODO: FUNKTIONEN
-#       USP (Excel import von Wertpapieren)
-#       Abfragen der Boersen
-#       "on delete cascade" konsistent durchziehen
-#       Schnittstellen implementieren (POST)
 
 # ============================================================================================================
 # Starting site
@@ -254,7 +244,6 @@ def get_course_money(given_rate, money):
     return money
 
 
-
 # ============================================================================================================
 # TODO: Everything needed for Securities
 # ============================================================================================================
@@ -296,6 +285,7 @@ def security_creation():
 
         return redirect(url_for('home_site'))
     return render_template('security_creation.html', title='Create Security', form=form)
+
 
 @app.route('/security/creation/xlsx', methods=['GET', 'POST'])
 @login_required
@@ -351,9 +341,6 @@ def security_creation_additional_confirmation():
                 continue
 
         db.session.commit()
-
-
-
         session.pop('securities', None)
         flash('Successfully created securities!')
         return redirect(url_for('home_site'))
@@ -510,7 +497,6 @@ def put_buySec(sec_id):
         currency = float(data['market_currency_code'])
     if 'fees' in data:
         fees = data['fees']
-
 
     result = (price * amount)
     result = Decimal(result)
