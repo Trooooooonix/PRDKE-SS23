@@ -374,10 +374,18 @@ def update_sec(sec_id):
 @login_required
 def security_deletion(security_id):
     security = Security.query.get(security_id)
-    db.session.delete(security)
-    db.session.commit()
-    print(security)
-    flash(f'Security: {security.name} deleted successfully!')
+    dict = security.to_dict()
+    json = jsonify(dict)
+    url = "https://localhost:50052/deleteoffer/" + str(security.security_id)
+
+    header = {"Content-Type": "application/json"}
+    response = requests.post(url, data=json, headers=header)
+    if response.status_code == 200:
+        db.session.delete(security)
+        db.session.commit()
+        flash(f'Security: {security.name} deleted successfully!')
+    else:
+        flash(f'Security: {security.name} problem deleting security!')
     return redirect(request.referrer or url_for('security_overview'))
 
 

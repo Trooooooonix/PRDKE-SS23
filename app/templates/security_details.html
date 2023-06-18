@@ -18,12 +18,12 @@
             </div>
         </div>
         {% if current_user.admin_tag %}
-            <a class="btn"
+            <a class="href-blue"
                href="{{ url_for('update_sec',sec_id = security.security_id) }}"
                style="text-align: right; color: #1D3557">
-                bearbeiten
+                edit
             </a>
-            <a style="margin-left: 20px; color: #1D3557"
+            <a class="href-blue" style="margin-left: 20px; color: #1D3557"
                href="{{ url_for('company_details', company_id=security.comp_id) }}">
                 Show company
             </a>

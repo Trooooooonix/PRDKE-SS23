@@ -73,7 +73,6 @@
                 <th>Company</th>
                 {% if current_user.admin_tag %}
                     <th/>
-                    <th/>
                 {% endif %}
             </tr>
             </thead>
@@ -96,13 +95,6 @@
                                href="{{ url_for('update_sec',sec_id = security.security_id) }}"
                                style="text-align: right; align-content: flex-end;">
                                 bearbeiten
-                            </a>
-                        </td>
-                        <td>
-                            <a class="btn-block"
-                               href="{{ url_for('security_deletion',security_id = security.security_id) }}"
-                               style="text-align: right; color:red">
-                                löschen
                             </a>
                         </td>
                     {% endif %}
