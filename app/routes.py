@@ -313,7 +313,7 @@ def security_creation_xlsx():
             session['securities'] = jsonify(securities).data
             return redirect(url_for('security_creation_additional_confirmation'))
 
-    return render_template("security_creation_xlsx_one.html")
+    return render_template("security_creation_xlsx_upload.html")
 
 
 @app.route('/security/creation/xlsx_two', methods=['GET', 'POST'])
@@ -345,7 +345,7 @@ def security_creation_additional_confirmation():
         flash('Successfully created securities!')
         return redirect(url_for('home_site'))
 
-    return render_template("security_creation_xlsx_two.html", securities=secs)
+    return render_template("security_creation_xlsx_confirmation.html", securities=secs)
 
 
 @app.route('/firmen/security/<int:sec_id>', methods=['GET', 'POST'])
