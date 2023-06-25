@@ -3,9 +3,10 @@
 {% block content %}
     <h1> {{ company.company_name }}</h1>
     <div class="container">
-        <div>
+        <div class="container">
             <div style="display: flex; align-items: center">
-                <img src="{{ url_for('static', filename=company.company_name+'_house.jpg') }}" alt="image" width="300"
+                <img src="{{ url_for('static', filename=company.company_name+'_house.jpg') }}" alt="image"
+                     width="300"
                      height="400">
                 <div style="margin-top: 5px; margin-left: 5px">
                     <div>
@@ -42,7 +43,6 @@
             <a class="href-blue" style="margin-left: 15px" href="{{ url_for('security_creation_xlsx') }}">
                 Create Security via Excel
             </a>
-
         {% endif %}
         <hr>
         <h2>Available Securities of {{ company.company_name }}:</h2>
@@ -101,4 +101,5 @@
             </tr>
         {% endif %}
     </div>
+
 {% endblock %}

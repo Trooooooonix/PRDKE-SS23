@@ -438,6 +438,7 @@ def get_mapped_comp_sec_data():
 
     sec = Security.query.get(sec_id)
     company = Company.query.get(sec.comp_id)
+
     all_secs = Security.query.filter_by(comp_id=sec.comp_id).all()
 
     chart_data = {
@@ -470,17 +471,12 @@ def get_mapped_comp_sec_data():
 
 @app.route('/firmen/wertpapiere/mapped', methods=['GET'])
 def get_mapped_secs():
-    # Get the current URL and extract the security ID from it
     url = request.referrer
     sec_id = url.split('/')[-1]
-
-    # Fetch transactions from the API
-    transactions_url = 'http://127.0.0.1:50052/markets/transactions'
-    response = requests.get(transactions_url)
-    transactions = response.json()
-
-    # Fetch the specific security using the security ID
     security = Security.query.get(sec_id)
+
+    response = requests.get('http://127.0.0.1:50052/markets/transactions')
+    transactions = response.json()
 
     mapped_data = []
     for transaction in transactions:
