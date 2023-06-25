@@ -23,12 +23,11 @@
                style="text-align: right; color: #1D3557">
                 edit
             </a>
-            <a class="href-blue" style="margin-left: 20px; color: #1D3557"
-               href="{{ url_for('company_details', company_id=security.comp_id) }}">
-                Show company
-            </a>
         {% endif %}
-
+        <a class="href-blue" style="margin-left: 20px; color: #1D3557"
+           href="{{ url_for('company_details', company_id=security.comp_id) }}">
+            Show company
+        </a>
         <hr style="border-color: #1D3557; border-width: 0.1rem; border-style: solid;">
 
         <div class="chart-container">
@@ -38,60 +37,79 @@
         {# Script for the charts #}
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                // Script for the circle-chart
-                var data = {
-                    labels: ['Voestalpine A', 'Voestalpine B', 'Voestalpine C', 'KEBA 1', 'WACKER AUT'],
-                    datasets: [{
-                        label: 'Amount',
-                        data: [12341, 1231, 11451, 9064, 2151],
-                        backgroundColor: ['#E63946', '#457B9D', '#1D3557', '#A8DADC', '#F1FAEE'],
-                        borderColor: ['#1D3557'],
-                        borderWidth: 1
-                    }]
-                };
-                var options = {
-                    responsive: false,
-                    maintainAspectRatio: false
-                };
+                fetch('/firmen/company/mapped')
+                    .then(response => response.json())
+                    .then(data => {
+                        var chartData = {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Amount',
+                                data: data.datasets[0].data,
+                                backgroundColor: data.datasets[0].backgroundColor,
+                                borderColor: data.datasets[0].borderColor,
+                                borderWidth: data.datasets[0].borderWidth
+                            }]
+                        };
+                        var options = {
+                            responsive: false,
+                            maintainAspectRatio: false,
+                        };
 
-                var ctx = document.getElementById('circle-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: data,
-                    options: options
-                });
-            });
+                        var ctx = document.getElementById('circle-chart').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'pie',
+                            data: chartData,
+                            options: options
+                        });
+                    });
+            })
 
             // Script for the Line-Chart
             document.addEventListener('DOMContentLoaded', function () {
-                var data = {
-                    labels: ['13.05.2023', '17.05.2023', '24.05.2023', '28.05.2023', '01.06.2023',
-                        '04.06.2023', '12.06.2023', '13.06.2023', '22.06.2023', '25.06.2023'],
-                    datasets: [{
-                        label: 'Sold',
-                        data: [100, 240, 130, 110, 370, 15, 6, 41, 500, 9],
-                        backgroundColor: ['#1D3557'],
-                        borderColor: ['#1D3557'],
-                        borderWidth: 1 // Width of the line
-                    }]
-                };
+                fetch('/firmen/wertpapiere/mapped')
+                    .then(response => response.json())
+                    .then(data => {
+                        var chartData = {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Sold',
+                                data: data.datasets[0].data,
+                                backgroundColor: data.datasets[0].backgroundColor,
+                                borderColor: data.datasets[0].borderColor,
+                                borderWidth: data.datasets[0].borderWidth
+                            }]
+                        };
 
-                // Display options
-                var options = {
-                    responsive: false, // Important to have at false, else the chart scales infinitely
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true // Start the y-axis at zero
-                        }
-                    }
-                };
-                var ctx = document.getElementById('line-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: data,
-                    options: options
-                });
+                        var options = {
+                            responsive: false,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Amount'
+                                    }
+                                }
+                            }
+                        };
+
+                        var ctx = document.getElementById('line-chart').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: chartData,
+                            options: options
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             });
         </script>
     </div>

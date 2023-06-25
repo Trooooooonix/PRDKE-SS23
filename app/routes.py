@@ -231,6 +231,7 @@ def edit_balance_down(account_id):
     flash("Balance has been edited")
     return redirect(request.referrer)
 
+
 # always calculates to USD
 def get_course_money(given_rate, money):
     if given_rate == "EUR":
@@ -428,6 +429,80 @@ def get_securities():
     secs = Security.query.all()
     dict = [x.to_dict() for x in secs]
     return jsonify(dict)
+
+
+@app.route('/firmen/company/mapped', methods=['GET'])
+def get_mapped_comp_sec_data():
+    url = request.referrer
+    sec_id = url.split('/')[-1]
+
+    sec = Security.query.get(sec_id)
+    company = Company.query.get(sec.comp_id)
+    all_secs = Security.query.filter_by(comp_id=sec.comp_id).all()
+
+    chart_data = {
+        'labels': [x.name for x in all_secs],
+        'datasets': [{
+            'label': company.company_name,
+            'data': [x.amount for x in all_secs],
+            'backgroundColor': [
+                '#FF6F61', '#1D3557', '#FFD166', '#1D3557', '#06D6A0',
+                '#1D3557', '#118AB2', '#1D3557', '#073B4C', '#1D3557',
+                '#FF7F11', '#1D3557', '#FFC803', '#1D3557', '#17BEBB',
+                '#1D3557', '#F9A03F', '#1D3557', '#8338EC', '#1D3557',
+                '#3A86FF', '#1D3557', '#FF3838', '#1D3557', '#DCE0E6',
+                '#1D3557', '#FFD8CB', '#1D3557', '#FF8E8E', '#1D3557'
+            ],
+            'borderColor': [
+                '#1D3557', '#1D3557', '#1D3557', '#1D3557', '#1D3557',
+                '#1D3557', '#1D3557', '#1D3557', '#1D3557', '#1D3557',
+                '#1D3557', '#1D3557', '#1D3557', '#1D3557', '#1D3557',
+                '#1D3557', '#1D3557', '#1D3557', '#1D3557', '#1D3557',
+                '#1D3557', '#1D3557', '#1D3557', '#1D3557', '#1D3557',
+                '#1D3557', '#1D3557', '#1D3557', '#1D3557'
+            ],
+            'borderWidth': 1
+        }]
+    }
+
+    return jsonify(chart_data)
+
+
+@app.route('/firmen/wertpapiere/mapped', methods=['GET'])
+def get_mapped_secs():
+    # Get the current URL and extract the security ID from it
+    url = request.referrer
+    sec_id = url.split('/')[-1]
+
+    # Fetch transactions from the API
+    transactions_url = 'http://127.0.0.1:50052/markets/transactions'
+    response = requests.get(transactions_url)
+    transactions = response.json()
+
+    # Fetch the specific security using the security ID
+    security = Security.query.get(sec_id)
+
+    mapped_data = []
+    for transaction in transactions:
+        if transaction['security_id'] == security.security_id:
+            date = transaction['timestamp'].split(" ")
+            mapped_data.append({
+                'timestamp': date[0],
+                'amount': transaction['security_amount']
+            })
+
+    chart_data = {
+        'labels': [data['timestamp'] for data in mapped_data],
+        'datasets': [{
+            'label': security.name,
+            'data': [data['amount'] for data in mapped_data],
+            'backgroundColor': '#1D3557',
+            'borderColor': '#1D3557',
+            'borderWidth': 1
+        }]
+    }
+
+    return jsonify(chart_data)
 
 
 @app.route('/firmen/specificCompany/wertpapiere/<int:comp_id>', methods=['GET'])
