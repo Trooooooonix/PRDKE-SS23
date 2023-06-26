@@ -34,8 +34,8 @@
             <canvas id="line-chart" width="700" height="700" style="margin-left: 190px">line-chart</canvas>
             <canvas id="circle-chart" width="700" height="700" style="margin-left: 200px">circle-chart</canvas>
         </div>
-        {# Script for the charts #}
         <script>
+            //Script for the pie-chart
             document.addEventListener('DOMContentLoaded', function () {
                 fetch('/firmen/company/mapped')
                     .then(response => response.json())
@@ -64,7 +64,7 @@
                     });
             })
 
-            // Script for the Line-Chart
+            // Script for the line-chart
             document.addEventListener('DOMContentLoaded', function () {
                 fetch('/firmen/wertpapiere/mapped')
                     .then(response => response.json())
@@ -85,17 +85,11 @@
                             maintainAspectRatio: false,
                             scales: {
                                 x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Date'
-                                    }
+                                    title: {display: true, text: 'Date'}
                                 },
                                 y: {
                                     beginAtZero: true,
-                                    title: {
-                                        display: true,
-                                        text: 'Amount'
-                                    }
+                                    title: {display: true, text: 'Amount'}
                                 }
                             }
                         };

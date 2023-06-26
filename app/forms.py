@@ -69,16 +69,19 @@ class SecurityCreationForm(FlaskForm):
         response = requests.get('http://localhost:50052/markets')
         response2 = requests.get('http://localhost:50052/markets/currency')
 
-        if response.status_code == 200:
+        if response.status_code == 200 and response2.status_code == 200:
             markets_data = response.json()
             markets_currency_data = response2.json()
 
-            # Create a mapping of market_currency_id to market_currency_code
             currency_mapping = {market['market_currency_id']: market['market_currency_code'] for market in
                                 markets_currency_data}
 
             # Combine all market objects into a single list
-            markets = [market for sublist in markets_data.values() for market in sublist]
+            markets = []
+
+            for sublist in markets_data.values():
+                for market in sublist:
+                    markets.append(market)
 
             self.market_id.choices = [
                 (market['market_id'], f"{market['market_name']} ({currency_mapping.get(market['market_currency_id'])})")

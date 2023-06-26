@@ -159,7 +159,7 @@ def update_comp(comp_id):
         return redirect(previous_url)
 
     session['previous_url'] = request.referrer
-    return render_template('company_update.html', object=comp)
+    return render_template('company_update.html', company=comp)
 
 
 @app.route('/company/deletion/<int:company_id>', methods=['GET', 'DEL'])
@@ -296,9 +296,9 @@ def security_creation_xlsx():
         if file:
             securities = []
             # Read the Excel file into a DataFrame
-            df = pd.read_excel(file)
+            dataFrame = pd.read_excel(file)
 
-            for index, row in df.iterrows():
+            for index, row in dataFrame.iterrows():
                 name = row['name']
                 price = row['price']
                 amount = row['amount']
@@ -306,7 +306,7 @@ def security_creation_xlsx():
                 company_id = row['company_id']
                 market_id = row['market_id']
 
-                # Create the Security object and add it to the database
+                # Create the Security-object and add it to the database
                 security = Security(name=name, price=price, amount=amount, currency=currency,
                                     comp_id=company_id, market_id=market_id)
                 securities.append(security.to_dict())
