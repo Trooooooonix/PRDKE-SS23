@@ -8,6 +8,10 @@ from wtforms.validators import DataRequired, Email, EqualTo
 from app.models import User, Company, Security
 
 
+# The forms.py supports the application with it's input-forms.
+# For example when creating a security the SecurityCreationForm is called when the right HTML-file is rendered.
+# This is needed to be able to read the data a User types on the specific Website.
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

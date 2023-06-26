@@ -4,6 +4,9 @@ from flask_login import UserMixin
 from app import login
 
 
+# The models.py supports the application, or rather the database with its base structure
+# Automated ID-creation, tables, rows in tables and constraints are defined and created here
+
 # Thats how to create a Table in the DB
 # This part is responsible for user's login-data + (de-)hashing the password
 class User(UserMixin, db.Model):

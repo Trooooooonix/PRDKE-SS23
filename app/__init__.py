@@ -6,6 +6,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 
+# The __init__.py-file serves the application as entry point and initializer for packages
+#       and constraints such as CORS. CORS gives the put in Ports permission to request and send Data.
+
 app = Flask(__name__)
 app.config.from_object(Config)
 

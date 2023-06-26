@@ -14,6 +14,9 @@ from werkzeug.utils import secure_filename
 from werkzeug.urls import url_parse
 from decimal import Decimal
 
+# The routes.py supports the application with the REST-Interfaces
+#       and functions to render the HTML-files in the "template folder"
+
 
 # ============================================================================================================
 # Starting site
